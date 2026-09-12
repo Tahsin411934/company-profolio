@@ -53,12 +53,14 @@ export function PageLoader() {
       {loading ? (
         <motion.div
           className="fixed inset-0 z-[999] grid place-items-center overflow-hidden bg-blue-950 px-5 text-white"
-          initial={{ opacity: 1 }}
+          initial={{ opacity: 1, scale: 1 }}
           exit={{
             opacity: 0,
+            scale: 1.04,
+            filter: "blur(10px)",
             transition: {
-              duration: 0.35,
-              ease: "easeOut",
+              duration: 0.7,
+              ease: [0.22, 1, 0.36, 1],
             },
           }}
         >

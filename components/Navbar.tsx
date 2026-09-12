@@ -1,6 +1,7 @@
 "use client";
 
 import { ArrowRight, Menu, X } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { cn } from "../lib/utils";
@@ -58,32 +59,21 @@ export function Navbar() {
         aria-label="Main navigation"
       >
         <Link
-          className="inline-flex shrink-0 items-center gap-3.5 text-white max-[540px]:min-w-0 max-[540px]:gap-2.5 max-[360px]:gap-2"
+          className="relative block h-14 w-[190px] shrink-0 overflow-hidden max-[540px]:h-12 max-[540px]:w-[150px] max-[360px]:w-[132px]"
           href="#top"
           onClick={() => {
             setActiveLink("Home");
             setOpen(false);
           }}
         >
-          <span
-            className="relative inline-flex items-center text-[32px] font-black leading-none tracking-tight text-white max-[540px]:shrink-0 max-[540px]:text-[28px] max-[360px]:text-2xl"
-            aria-hidden="true"
-          >
-            <span className="relative">
-              A
-              <span className="absolute left-0.5 top-1 h-[3px] w-3 rounded-full bg-emerald-400 shadow-[0_0_18px_rgba(52,211,153,0.45)] max-[540px]:top-[3px] max-[540px]:h-0.5 max-[540px]:w-2.5" />
-            </span>
-            FT
-          </span>
-
-          <span className="grid gap-1 leading-none max-[540px]:min-w-0">
-            <strong className="text-lg font-bold tracking-tight text-white max-[540px]:block max-[540px]:max-w-[188px] max-[540px]:overflow-hidden max-[540px]:text-ellipsis max-[540px]:whitespace-nowrap max-[540px]:text-xs max-[360px]:max-w-[158px] max-[360px]:text-[10px]">
-              AFT SOFT AND LIMITED
-            </strong>
-            <small className="text-[10px] font-normal tracking-wide text-slate-300 max-[540px]:text-[7px] max-[540px]:tracking-normal max-[360px]:text-[6px]">
-              Technology | People | Possibilities
-            </small>
-          </span>
+          <Image
+            className="object-contain object-left brightness-125 contrast-125 saturate-150 [mix-blend-mode:screen]"
+            src="/aft-logo.png"
+            alt="AFT SOFT AND LIMITED"
+            fill
+            priority
+            sizes="(min-width: 768px) 190px, 150px"
+          />
         </Link>
 
         <div
