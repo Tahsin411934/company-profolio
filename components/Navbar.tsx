@@ -68,7 +68,7 @@ export function Navbar() {
         >
           <Image
             className="object-contain object-left brightness-110 contrast-110"
-            src="/aft-navbar-logo.png"
+            src="/aft-navbar-logo-clean.png"
             alt="AFT SOFT AND LIMITED"
             fill
             priority
