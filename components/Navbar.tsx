@@ -59,7 +59,7 @@ export function Navbar() {
         aria-label="Main navigation"
       >
         <Link
-          className="relative block h-14 w-[190px] shrink-0 overflow-hidden max-[540px]:h-12 max-[540px]:w-[150px] max-[360px]:w-[132px]"
+          className="relative block h-14 w-[210px] shrink-0 overflow-hidden max-[540px]:h-11 max-[540px]:w-[165px] max-[360px]:w-[145px]"
           href="#top"
           onClick={() => {
             setActiveLink("Home");
@@ -67,12 +67,12 @@ export function Navbar() {
           }}
         >
           <Image
-            className="object-contain object-left brightness-125 contrast-125 saturate-150 [mix-blend-mode:screen]"
-            src="/aft-logo.png"
+            className="object-contain object-left brightness-110 contrast-110"
+            src="/aft-navbar-logo.png"
             alt="AFT SOFT AND LIMITED"
             fill
             priority
-            sizes="(min-width: 768px) 190px, 150px"
+            sizes="(min-width: 768px) 210px, 165px"
           />
         </Link>
 

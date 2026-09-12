@@ -56,10 +56,9 @@ export function PageLoader() {
           initial={{ opacity: 1, scale: 1 }}
           exit={{
             opacity: 0,
-            scale: 1.04,
-            filter: "blur(10px)",
+            scale: 0.98,
             transition: {
-              duration: 0.7,
+              duration: 0.45,
               ease: [0.22, 1, 0.36, 1],
             },
           }}
