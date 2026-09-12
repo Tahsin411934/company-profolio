@@ -89,19 +89,22 @@ export function PageLoader() {
 
           <div className="relative z-10 flex w-full max-w-2xl flex-col items-center text-center">
             <motion.div
-              className="relative h-24 w-72 drop-shadow-[0_0_32px_rgba(52,211,153,0.22)] sm:h-32 sm:w-[420px] md:h-40 md:w-[520px]"
+              className="relative grid h-32 w-80 place-items-center rounded-2xl border border-white/10 bg-white/[0.03] px-6 shadow-2xl shadow-emerald-400/10 backdrop-blur-sm sm:h-40 sm:w-[460px] md:h-48 md:w-[580px]"
               variants={logoVariants}
               initial="hidden"
               animate="visible"
             >
-              <Image
-                className="object-contain"
-                src="/aft-logo.png"
-                alt="AFT SOFT AND LIMITED"
-                fill
-                priority
-                sizes="(min-width: 768px) 520px, (min-width: 640px) 420px, 288px"
-              />
+              <div className="absolute inset-0 rounded-2xl bg-[radial-gradient(circle_at_center,rgba(52,211,153,0.18),transparent_62%)]" />
+              <div className="relative h-24 w-72 drop-shadow-[0_0_34px_rgba(255,255,255,0.2)] sm:h-32 sm:w-[420px] md:h-40 md:w-[520px]">
+                <Image
+                  className="object-contain brightness-150 contrast-125 saturate-150 [mix-blend-mode:screen]"
+                  src="/aft-logo.png"
+                  alt="AFT SOFT AND LIMITED"
+                  fill
+                  priority
+                  sizes="(min-width: 768px) 520px, (min-width: 640px) 420px, 288px"
+                />
+              </div>
             </motion.div>
 
             <motion.h2
