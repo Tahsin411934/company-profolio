@@ -1,6 +1,41 @@
 "use client";
 
+import { AnimatePresence, motion, type Variants } from "framer-motion";
+import Image from "next/image";
 import { useEffect, useState } from "react";
+
+const logoVariants: Variants = {
+  hidden: {
+    opacity: 0,
+    scale: 0.8,
+    y: 8,
+  },
+  visible: {
+    opacity: 1,
+    scale: 1,
+    y: 0,
+    transition: {
+      duration: 0.55,
+      ease: [0.22, 1, 0.36, 1],
+    },
+  },
+};
+
+const textVariants: Variants = {
+  hidden: {
+    opacity: 0,
+    y: 18,
+  },
+  visible: (delay: number = 0) => ({
+    opacity: 1,
+    y: 0,
+    transition: {
+      delay,
+      duration: 0.45,
+      ease: [0.22, 1, 0.36, 1],
+    },
+  }),
+};
 
 export function PageLoader() {
   const [loading, setLoading] = useState(true);
@@ -13,30 +48,84 @@ export function PageLoader() {
     return () => window.clearTimeout(timer);
   }, []);
 
-  if (!loading) {
-    return null;
-  }
-
   return (
-    <div className="fixed inset-0 z-[999] grid place-items-center bg-blue-950 text-white">
-      <div className="flex flex-col items-center gap-6">
-        <div className="relative grid h-20 w-20 place-items-center">
-          <div className="absolute inset-0 rounded-full border-2 border-slate-700" />
-          <div className="absolute inset-0 animate-spin rounded-full border-2 border-transparent border-t-emerald-400 border-r-emerald-400" />
-          <span className="text-xl font-black tracking-tight">AFT</span>
-        </div>
+    <AnimatePresence>
+      {loading ? (
+        <motion.div
+          className="fixed inset-0 z-[999] grid place-items-center overflow-hidden bg-blue-950 px-5 text-white"
+          initial={{ opacity: 1 }}
+          exit={{
+            opacity: 0,
+            transition: {
+              duration: 0.35,
+              ease: "easeOut",
+            },
+          }}
+        >
+          <motion.div
+            className="absolute inset-0 opacity-25 [background-image:linear-gradient(rgba(52,211,153,0.18)_1px,transparent_1px),linear-gradient(90deg,rgba(52,211,153,0.14)_1px,transparent_1px)] [background-size:48px_48px]"
+            animate={{
+              backgroundPosition: ["0px 0px", "48px 48px"],
+            }}
+            transition={{
+              duration: 6,
+              ease: "linear",
+              repeat: Infinity,
+            }}
+          />
 
-        <div className="text-center">
-          <p className="text-sm font-bold tracking-tight">AFT SOFT AND LIMITED</p>
-          <p className="mt-2 text-[10px] font-normal uppercase tracking-[0.28em] text-slate-300">
-            Loading Experience
-          </p>
-        </div>
+          <motion.div
+            className="absolute left-1/2 top-1/2 h-72 w-72 -translate-x-1/2 -translate-y-1/2 rounded-full bg-emerald-400/10 blur-3xl"
+            animate={{
+              scale: [1, 1.12, 1],
+              opacity: [0.35, 0.55, 0.35],
+            }}
+            transition={{
+              duration: 2.4,
+              ease: "easeInOut",
+              repeat: Infinity,
+            }}
+          />
 
-        <div className="h-1 w-44 overflow-hidden rounded-full bg-slate-800">
-          <div className="h-full w-1/2 animate-[pulse_1s_ease-in-out_infinite] rounded-full bg-emerald-400" />
-        </div>
-      </div>
-    </div>
+          <div className="relative z-10 flex w-full max-w-2xl flex-col items-center text-center">
+            <motion.div
+              className="relative h-24 w-72 drop-shadow-[0_0_32px_rgba(52,211,153,0.22)] sm:h-32 sm:w-[420px] md:h-40 md:w-[520px]"
+              variants={logoVariants}
+              initial="hidden"
+              animate="visible"
+            >
+              <Image
+                className="object-contain"
+                src="/aft-logo.png"
+                alt="AFT SOFT AND LIMITED"
+                fill
+                priority
+                sizes="(min-width: 768px) 520px, (min-width: 640px) 420px, 288px"
+              />
+            </motion.div>
+
+            <motion.h2
+              className="mt-8 text-xl font-extrabold tracking-tight text-white drop-shadow-[0_0_18px_rgba(255,255,255,0.18)] sm:text-2xl md:text-3xl"
+              variants={textVariants}
+              initial="hidden"
+              animate="visible"
+              custom={0.18}
+            >
+              AFT SOFT AND LIMITED
+            </motion.h2>
+
+            <motion.p
+              className="mt-3 text-[10px] font-normal uppercase tracking-[0.28em] text-slate-300 drop-shadow-[0_0_14px_rgba(52,211,153,0.18)] sm:text-xs"
+              variants={textVariants}
+              initial="hidden"
+              animate="visible"
+              custom={0.34}
+            >
+              Technology | People | Possibilities
+            </motion.p>
+          </div>
+        </motion.div>
+      ) : null}
+    </AnimatePresence>
   );
 }

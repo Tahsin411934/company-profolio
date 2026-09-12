@@ -20,7 +20,7 @@ export function Navbar() {
   const [open, setOpen] = useState(false);
 
   return (
-    <header className="absolute inset-x-0 top-0 z-50 border-b border-slate-400/20 bg-blue-950/95 shadow-[0_8px_28px_rgba(2,6,23,0.16)] backdrop-blur-md">
+    <header className="fixed inset-x-0 top-0 z-50 border-b border-slate-400/20 bg-blue-950/95 shadow-[0_8px_28px_rgba(2,6,23,0.16)] backdrop-blur-md">
       <nav
         className="mx-auto flex min-h-[78px] w-[calc(100%_-_64px)] max-w-7xl items-center justify-between gap-6 max-[820px]:w-[min(calc(100%_-_40px),700px)] max-[540px]:min-h-[70px] max-[540px]:w-[calc(100%_-_32px)] max-[540px]:gap-2 max-[360px]:w-[calc(100%_-_24px)]"
         aria-label="Main navigation"
