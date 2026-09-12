@@ -14,7 +14,7 @@ export function Hero() {
   return (
     <>
       <section
-        className="relative min-h-[680px] overflow-hidden bg-blue-950 text-white max-[1024px]:min-h-[640px] max-[540px]:min-h-[650px]"
+        className="relative min-h-[680px] overflow-hidden bg-blue-950 text-white max-[1024px]:min-h-[640px] max-[640px]:min-h-screen"
         aria-labelledby="hero-title"
       >
         <Image
@@ -27,7 +27,7 @@ export function Hero() {
         />
         <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(2,6,23,0.98)_0%,rgba(8,47,73,0.9)_30%,rgba(8,47,73,0.6)_48%,rgba(2,6,23,0.18)_70%,rgba(2,6,23,0.05)_100%)] max-[768px]:bg-[linear-gradient(90deg,rgba(2,6,23,0.98)_0%,rgba(8,47,73,0.92)_48%,rgba(2,6,23,0.42)_100%)]" />
 
-        <div className="relative z-10 mx-auto flex min-h-[680px] max-w-7xl flex-col justify-center px-4 py-24 sm:px-6 lg:min-h-[700px] lg:px-8 max-[1024px]:min-h-[640px] max-[540px]:min-h-[650px] max-[540px]:py-20">
+        <div className="relative z-10 mx-auto flex min-h-[680px] max-w-7xl flex-col justify-center px-4 py-24 sm:px-6 lg:min-h-[700px] lg:px-8 max-[1024px]:min-h-[640px] max-[640px]:min-h-screen max-[540px]:py-20">
           <div className="w-full max-w-xl lg:max-w-2xl">
             <div className="mb-7">
               <p className="text-xs font-medium uppercase tracking-[0.25em] text-slate-300 md:text-sm md:tracking-[0.3em]">
@@ -37,7 +37,7 @@ export function Hero() {
             </div>
 
             <h1
-            id="hero-title"
+              id="hero-title"
               className="max-w-2xl text-3xl font-extrabold leading-[1.05] tracking-tight text-white md:text-5xl xl:text-5xl max-[540px]:text-4xl"
             >
               Building a

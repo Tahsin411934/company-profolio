@@ -43,7 +43,7 @@ export function PageLoader() {
   useEffect(() => {
     const timer = window.setTimeout(() => {
       setLoading(false);
-    }, 1000);
+    }, 2000);
 
     return () => window.clearTimeout(timer);
   }, []);
