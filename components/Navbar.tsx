@@ -2,7 +2,7 @@
 
 import { ArrowRight, Menu, X } from "lucide-react";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { cn } from "../lib/utils";
 import { Button } from "./ui/button";
 
@@ -16,8 +16,40 @@ const links = [
   "Contact",
 ];
 
+function getSectionId(link: string) {
+  return link === "Home" ? "top" : link.toLowerCase().replace(" ", "-");
+}
+
 export function Navbar() {
   const [open, setOpen] = useState(false);
+  const [activeLink, setActiveLink] = useState("Home");
+
+  useEffect(() => {
+    const updateActiveLink = () => {
+      const scrollPosition = window.scrollY + 110;
+
+      for (const link of links) {
+        const section = document.getElementById(getSectionId(link));
+
+        if (!section) {
+          continue;
+        }
+
+        const sectionTop = section.offsetTop;
+        const sectionBottom = sectionTop + section.offsetHeight;
+
+        if (scrollPosition >= sectionTop && scrollPosition < sectionBottom) {
+          setActiveLink(link);
+          return;
+        }
+      }
+    };
+
+    updateActiveLink();
+    window.addEventListener("scroll", updateActiveLink, { passive: true });
+
+    return () => window.removeEventListener("scroll", updateActiveLink);
+  }, []);
 
   return (
     <header className="fixed inset-x-0 top-0 z-50 border-b border-slate-400/20 bg-blue-950/95 shadow-[0_8px_28px_rgba(2,6,23,0.16)] backdrop-blur-md">
@@ -28,7 +60,10 @@ export function Navbar() {
         <Link
           className="inline-flex shrink-0 items-center gap-3.5 text-white max-[540px]:min-w-0 max-[540px]:gap-2.5 max-[360px]:gap-2"
           href="#top"
-          onClick={() => setOpen(false)}
+          onClick={() => {
+            setActiveLink("Home");
+            setOpen(false);
+          }}
         >
           <span
             className="relative inline-flex items-center text-[32px] font-black leading-none tracking-tight text-white max-[540px]:shrink-0 max-[540px]:text-[28px] max-[360px]:text-2xl"
@@ -64,15 +99,14 @@ export function Navbar() {
               key={link}
               className={cn(
                 "relative py-[29px] pb-[27px] text-[13px] font-medium text-slate-200 transition-colors hover:text-emerald-400 max-[1080px]:text-xs max-[820px]:py-3.5 max-[820px]:text-sm",
-                link === "Home" &&
+                activeLink === link &&
                   "text-emerald-400 after:absolute after:inset-x-0 after:bottom-5 after:h-0.5 after:bg-emerald-400 max-[820px]:after:right-auto max-[820px]:after:bottom-2 max-[820px]:after:w-7",
               )}
-              href={
-                link === "Home"
-                  ? "#top"
-                  : `#${link.toLowerCase().replace(" ", "-")}`
-              }
-              onClick={() => setOpen(false)}
+              href={`#${getSectionId(link)}`}
+              onClick={() => {
+                setActiveLink(link);
+                setOpen(false);
+              }}
             >
               {link}
             </Link>
