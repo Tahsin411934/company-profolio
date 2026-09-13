@@ -33,72 +33,117 @@ export function Hero() {
     <>
       <section
         id="hero"
-        className="relative overflow-hidden bg-[#0b1938] text-white"
+        className="relative isolate overflow-hidden bg-[#0b1730] text-white"
         aria-labelledby="hero-title"
       >
-        <Image
-          className="object-cover object-right max-[768px]:object-[62%_center] max-[540px]:object-[65%_center]"
-          src="/banner.png"
-          alt=""
-          fill
-          priority
-          sizes="100vw"
+        <div
+          className="pointer-events-none absolute inset-y-0 left-8 hidden w-px bg-white/[0.04] lg:block"
+          aria-hidden="true"
         />
-        <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(2,6,23,0.98)_0%,rgba(8,47,73,0.9)_30%,rgba(8,47,73,0.6)_48%,rgba(2,6,23,0.18)_70%,rgba(2,6,23,0.05)_100%)] max-[768px]:bg-[linear-gradient(90deg,rgba(2,6,23,0.98)_0%,rgba(8,47,73,0.92)_48%,rgba(2,6,23,0.42)_100%)]" />
-
-        <div className="site-container relative z-10 flex min-h-[660px] flex-col justify-center pb-32 pt-40 lg:min-h-[740px] lg:pb-36 lg:pt-44">
-          <div className="w-full max-w-xl lg:max-w-2xl">
-            <div className="mb-7">
-              <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-slate-300 sm:text-xs">
-                Technology&nbsp;&nbsp; People&nbsp;&nbsp; Possibilities
+        <div className="site-container relative pb-10 pt-32 sm:pb-14 sm:pt-36 lg:pb-16 lg:pt-40">
+          <div className="grid items-center gap-12 lg:grid-cols-[1.05fr_1fr] lg:gap-16">
+            <div className="relative py-2 lg:py-8">
+              <p className="flex items-center gap-3 text-[10px] font-semibold uppercase tracking-[0.2em] text-slate-300 sm:text-xs">
+                <span
+                  className="h-px w-7 shrink-0 bg-emerald-300/80"
+                  aria-hidden="true"
+                />
+                Technology &middot; People &middot; Possibilities
               </p>
-              <span className="mt-4 block h-[2px] w-10 bg-emerald-400" />
+              <h1
+                id="hero-title"
+                className="mt-7 text-[clamp(28px,7.9vw,60px)] font-extrabold leading-[1.12] tracking-[-0.045em] lg:text-[72px] lg:leading-[1.06]"
+              >
+                <span className="block">Building a</span>{" "}
+                <span className="block whitespace-nowrap lg:whitespace-normal">
+                  <span className="text-emerald-300 lg:block">Smarter</span>{" "}
+                  <span className="lg:block">
+                    Tomorrow<span className="text-emerald-300">.</span>
+                  </span>
+                </span>
+              </h1>
+              <p className="mt-7 max-w-[440px] text-base leading-[1.8] text-slate-300 sm:text-lg">
+                Innovative IT solutions to help businesses grow, transform, and
+                make a greater impact in the digital world.
+              </p>
+              <div className="mt-8 flex flex-wrap items-center gap-x-7 gap-y-5 sm:mt-10">
+                <Button
+                  className="group h-12 border border-blue-400/30 px-6 shadow-[0_4px_20px_rgba(37,88,211,0.15)]"
+                  href="#contact"
+                >
+                  Get Started{" "}
+                  <ArrowRight
+                    size={17}
+                    className="transition-transform group-hover:translate-x-1"
+                  />
+                </Button>
+                <button
+                  className="group inline-flex min-h-12 items-center gap-3 text-sm font-semibold text-slate-200 transition-colors hover:text-white"
+                  ref={videoTrigger}
+                  type="button"
+                  onClick={() => setVideoOpen(true)}
+                >
+                  <span className="grid h-10 w-10 place-items-center rounded-full border border-white/25 transition-colors group-hover:border-emerald-300 group-hover:bg-white/5">
+                    <Play
+                      className="ml-0.5"
+                      size={14}
+                      fill="currentColor"
+                      aria-hidden="true"
+                    />
+                  </span>
+                  Watch Our Video
+                </button>
+              </div>
             </div>
 
-            <h1
-              id="hero-title"
-              className="max-w-2xl text-[38px] font-extrabold leading-[1.08] tracking-[-0.04em] text-white sm:text-[52px] lg:text-[64px]"
-            >
-              Building a
-              <span className="block">
-                <span className="text-emerald-400">Smarter</span> Tomorrow
-              </span>
-            </h1>
-
-            <p className="mt-6 max-w-lg text-base leading-relaxed text-slate-300 md:text-lg">
-              Innovative IT solutions to help businesses grow, transform, and
-              make a greater impact in the digital world.
-            </p>
-
-            <div className="mt-9 flex flex-wrap items-center gap-5 max-[540px]:items-start">
-              <Button className="px-6" href="#contact">
-                Get Started <ArrowRight size={18} />
-              </Button>
-
-              <button
-                className="group inline-flex items-center gap-3 border-0 bg-transparent p-0 text-sm font-medium text-white transition-colors duration-300 hover:text-emerald-300 md:text-base"
-                ref={videoTrigger}
-                type="button"
-                onClick={() => setVideoOpen(true)}
-              >
-                <span className="grid h-11 w-11 place-items-center rounded-full border border-blue-400/70 transition-colors duration-300 group-hover:border-emerald-400">
-                  <Play
-                    className="ml-0.5 text-blue-100"
-                    size={17}
-                    fill="currentColor"
+            <div className="relative min-w-0 lg:pl-3">
+              <div
+                className="absolute -inset-3 hidden rounded-[28px] border border-white/[0.07] lg:block"
+                aria-hidden="true"
+              />
+              <div className="relative aspect-[4/3] overflow-hidden rounded-2xl border border-white/15 bg-[#142540] sm:aspect-[16/10] lg:aspect-auto lg:h-[560px]">
+                <Image
+                  className="object-cover object-right"
+                  src="/banner.png"
+                  alt="AFT SOFT AND LIMITED branded technology workspace"
+                  fill
+                  priority
+                  // Account for the wide source image being cropped into a tall frame.
+                  // At 560px tall, object-cover scales the full image to about 1400px wide.
+                  sizes="(min-width: 1024px) 1400px, (min-width: 640px) 156vw, 188vw"
+                  quality={90}
+                />
+                <div
+                  className="absolute inset-0 bg-[linear-gradient(180deg,rgba(11,23,48,0.05)_35%,rgba(11,23,48,0.92)_100%)]"
+                  aria-hidden="true"
+                />
+                <div className="absolute inset-x-0 bottom-0 p-6 sm:p-8">
+                  <span
+                    className="mb-4 block h-px w-10 bg-emerald-300"
+                    aria-hidden="true"
                   />
-                </span>
-                Watch Our Video
-              </button>
+                  <p className="text-[10px] font-semibold uppercase tracking-[0.24em] text-slate-300">
+                    Ideas today
+                  </p>
+                  <p className="mt-2 text-xl font-semibold tracking-tight text-white sm:text-2xl">
+                    A better tomorrow.
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
-
-          <div className="absolute bottom-8 left-5 sm:left-6 lg:left-8">
-            <span className="mb-4 block h-[2px] w-9 bg-emerald-400" />
-            <p className="text-[10px] uppercase leading-relaxed tracking-[0.3em] text-slate-400 md:text-xs max-[540px]:text-[9px]">
-              IDEAS TODAY
-              <br />A BETTER TOMORROW
-            </p>
+          <div className="mt-10 flex flex-wrap items-center justify-between gap-3 border-t border-white/10 pt-5 text-[10px] font-medium uppercase tracking-[0.18em] text-slate-400 sm:text-xs lg:mt-16">
+            <span>Software &middot; SaaS &middot; IT Solutions</span>
+            <a
+              href="#products"
+              className="group inline-flex min-h-9 items-center gap-2 text-slate-300 transition-colors hover:text-emerald-300"
+            >
+              Explore our products{" "}
+              <ArrowRight
+                className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1"
+                aria-hidden="true"
+              />
+            </a>
           </div>
         </div>
       </section>
