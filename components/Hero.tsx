@@ -36,15 +36,16 @@ export function Hero() {
         className="border-b border-blue-100 bg-blue-50 text-blue-950"
         aria-labelledby="hero-title"
       >
-        <div className="site-container pb-16 pt-32 sm:pb-20 sm:pt-36 lg:pb-24 lg:pt-44">
-          <div className="grid items-center gap-10 lg:grid-cols-[1.1fr_1fr] lg:gap-12">
+        <div className="site-container pb-10 pt-28 sm:pb-12 sm:pt-32 lg:pb-14 lg:pt-32">
+          <div className="grid items-center gap-6 sm:gap-8 lg:grid-cols-[1.1fr_1fr] lg:gap-10">
             <div>
-              <p className="text-xs font-semibold tracking-wide text-blue-700">
+              <p className="flex items-center gap-3 text-xs font-semibold tracking-wide text-blue-700">
+                <span className="h-px w-6 bg-blue-600" aria-hidden="true" />
                 Software &middot; SaaS &middot; IT Solutions
               </p>
               <h1
                 id="hero-title"
-                className="mt-5 text-[clamp(28px,7.9vw,56px)] font-bold leading-[1.15] tracking-[-0.04em] lg:text-[48px] xl:text-[54px]"
+                className="mt-5 text-[clamp(28px,7.9vw,56px)] font-bold leading-[1.12] tracking-[-0.035em] lg:text-[48px] xl:text-[54px]"
               >
                 <span className="block">Building a</span>{" "}
                 <span className="block whitespace-nowrap">
@@ -55,17 +56,26 @@ export function Hero() {
                 Innovative IT solutions to help businesses grow, transform, and
                 make a greater impact in the digital world.
               </p>
-              <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-4">
-                <Button className="h-12 px-6" href="#contact">
-                  Get Started <ArrowRight size={17} aria-hidden="true" />
+              <div className="mt-8 flex flex-col gap-3 min-[480px]:flex-row min-[480px]:flex-wrap min-[480px]:items-center">
+                <Button
+                  className="group h-12 bg-gradient-to-r from-blue-700 to-indigo-600 px-6 shadow-md shadow-blue-700/15 transition-all duration-200 hover:-translate-y-0.5 hover:from-blue-800 hover:to-indigo-700 hover:shadow-lg hover:shadow-blue-700/20 focus-visible:ring-offset-4 focus-visible:ring-offset-blue-50"
+                  href="#contact"
+                >
+                  Get Started{" "}
+                  <ArrowRight
+                    size={17}
+                    className="transition-transform group-hover:translate-x-0.5"
+                    aria-hidden="true"
+                  />
                 </Button>
                 <button
-                  className="inline-flex min-h-12 items-center gap-2.5 text-sm font-semibold text-slate-700 transition-colors hover:text-blue-700"
+                  className="group inline-flex h-12 items-center justify-center gap-3 rounded-lg border border-blue-300 bg-gradient-to-r from-white to-blue-100 px-5 text-sm font-bold text-blue-900 shadow-sm shadow-blue-900/5 transition-all duration-200 hover:-translate-y-0.5 hover:border-blue-400 hover:from-blue-50 hover:to-indigo-100 hover:shadow-md hover:shadow-blue-900/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-4 focus-visible:ring-offset-blue-50"
                   ref={videoTrigger}
                   type="button"
+                  aria-haspopup="dialog"
                   onClick={() => setVideoOpen(true)}
                 >
-                  <span className="grid h-9 w-9 place-items-center rounded-full border border-blue-200 bg-white/60">
+                  <span className="grid h-7 w-7 shrink-0 place-items-center rounded-full bg-gradient-to-br from-blue-600 to-indigo-600 text-white shadow-sm transition-transform duration-200 group-hover:scale-105">
                     <Play
                       className="ml-0.5"
                       size={13}
@@ -81,26 +91,29 @@ export function Hero() {
               </p>
             </div>
             <div className="min-w-0">
-              <div className="relative aspect-[4/3]">
-                <Image
-                  className="object-contain"
-                  src="/porducts/hrm.png"
-                  alt="AFT HRM product preview showing employee, attendance, and payroll management"
-                  fill
-                  priority
-                  sizes="(min-width: 1280px) 560px, (min-width: 1024px) 48vw, 100vw"
-                  quality={90}
-                />
+              {/* Crop only the source image's transparent margins, keeping the full product visible. */}
+              <div className="relative aspect-[1504/836] overflow-hidden">
+                <div className="absolute -left-[1.26%] -top-[15.91%] h-[122.49%] w-[102.13%]">
+                  <Image
+                    className="object-contain"
+                    src="/porducts/ecommerce.png"
+                    alt="E-commerce storefront preview on desktop and mobile"
+                    fill
+                    priority
+                    sizes="(min-width: 1280px) 560px, (min-width: 1024px) 48vw, 100vw"
+                    quality={90}
+                  />
+                </div>
               </div>
-              <div className="mt-4 flex flex-wrap items-center justify-between gap-3 border-t border-blue-200/70 pt-4 text-sm">
+              <div className="mt-5 flex flex-wrap items-center justify-between gap-x-4 gap-y-2 rounded-xl border border-blue-100 bg-white/75 px-4 py-3 text-sm">
                 <span className="font-semibold text-blue-950">
-                  AFT HRM{" "}
+                  E-commerce{" "}
                   <span className="font-normal text-slate-500">
-                    / HR &amp; Payroll
+                    / Online Store
                   </span>
                 </span>
                 <a
-                  href="/products/hrm"
+                  href="/products/ecommerce"
                   className="inline-flex min-h-10 items-center gap-2 font-semibold text-blue-700 hover:text-blue-900"
                 >
                   View product <ArrowRight size={15} aria-hidden="true" />
@@ -125,7 +138,7 @@ export function Hero() {
             onClick={(event) => event.stopPropagation()}
           >
             <button
-              className="absolute right-3 top-3 z-10 grid h-10 w-10 place-items-center rounded-md bg-blue-950/80 text-white transition-colors hover:bg-emerald-400 hover:text-blue-950"
+              className="absolute right-3 top-3 z-10 grid h-10 w-10 place-items-center rounded-lg border border-white/20 bg-gradient-to-br from-blue-800 to-slate-950 text-white transition-colors hover:from-blue-700 hover:to-indigo-900"
               type="button"
               ref={videoClose}
               aria-label="Close video modal"

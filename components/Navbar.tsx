@@ -164,7 +164,7 @@ export function Navbar() {
           <div className="flex items-center gap-2 xl:justify-end">
             <div className="hidden items-center gap-2 xl:flex">
               <a
-                className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-lg border border-emerald-400/40 text-emerald-700 transition-colors hover:bg-emerald-100 hover:text-blue-950 focus-visible:outline focus-visible:outline-2 focus-visible:outline-emerald-400"
+                className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-lg border border-emerald-300 bg-gradient-to-br from-white to-emerald-100 text-emerald-800 transition-colors hover:from-emerald-50 hover:to-teal-200 hover:text-blue-950 focus-visible:outline focus-visible:outline-2 focus-visible:outline-emerald-400"
                 href="https://wa.me/8801323814588"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -175,7 +175,7 @@ export function Navbar() {
                 <MessageCircle className="h-5 w-5" aria-hidden="true" />
               </a>
               <a
-                className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-lg border border-blue-200 text-blue-950 transition-colors hover:bg-blue-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-emerald-400"
+                className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-lg border border-blue-200 bg-gradient-to-br from-white to-blue-100 text-blue-950 transition-colors hover:from-blue-50 hover:to-indigo-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-emerald-400"
                 href="tel:+8801323814588"
                 aria-label="Call us"
                 title="Call us"
@@ -185,7 +185,7 @@ export function Navbar() {
               </a>
             </div>
             <Button
-              className="h-11 bg-[#2458d3] px-4 text-sm font-bold text-white hover:bg-blue-700"
+              className="h-11 px-4 text-sm font-bold"
               href="#contact"
               onClick={() => {
                 setActiveLink("Contact");
@@ -198,7 +198,7 @@ export function Navbar() {
         </div>
         <div className="flex items-center gap-1 xl:hidden">
           <a
-            className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-lg border border-emerald-400/40 text-emerald-700 transition-colors hover:bg-emerald-100 hover:text-blue-950 focus-visible:outline focus-visible:outline-2 focus-visible:outline-emerald-400"
+            className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-lg border border-emerald-300 bg-gradient-to-br from-white to-emerald-100 text-emerald-800 transition-colors hover:from-emerald-50 hover:to-teal-200 hover:text-blue-950 focus-visible:outline focus-visible:outline-2 focus-visible:outline-emerald-400"
             href="https://wa.me/8801323814588"
             target="_blank"
             rel="noopener noreferrer"
@@ -209,7 +209,7 @@ export function Navbar() {
             <MessageCircle className="h-5 w-5" aria-hidden="true" />
           </a>
           <a
-            className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-lg border border-blue-200 text-blue-950 transition-colors hover:bg-blue-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-emerald-400"
+            className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-lg border border-blue-200 bg-gradient-to-br from-white to-blue-100 text-blue-950 transition-colors hover:from-blue-50 hover:to-indigo-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-emerald-400"
             href="tel:+8801323814588"
             aria-label="Call us"
             title="Call us"
@@ -219,7 +219,7 @@ export function Navbar() {
           </a>
           <button
             id="menu-toggle"
-            className=" inline-flex h-11 w-11 items-center justify-center justify-self-end rounded-lg text-blue-950 hover:bg-blue-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-emerald-400 xl:hidden"
+            className=" inline-flex h-11 w-11 items-center justify-center justify-self-end rounded-lg border border-blue-200 bg-gradient-to-br from-white to-blue-100 text-blue-950 hover:from-blue-50 hover:to-indigo-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-emerald-400 xl:hidden"
             aria-label={open ? "Close navigation" : "Open navigation"}
             aria-expanded={open}
             aria-controls="navbar-menu"
