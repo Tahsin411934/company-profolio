@@ -4,13 +4,13 @@ import { type AnchorHTMLAttributes, type ReactNode } from "react";
 import { cn } from "../../lib/utils";
 
 const buttonVariants = cva(
-  "inline-flex h-10 items-center justify-center gap-2 whitespace-nowrap rounded-md px-4 text-sm font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 disabled:pointer-events-none disabled:opacity-50",
+  "inline-flex h-12 items-center justify-center gap-2 whitespace-nowrap rounded-lg px-5 text-sm font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 disabled:pointer-events-none disabled:opacity-50",
   {
     variants: {
       variant: {
-        default: "bg-blue-950 text-white hover:bg-blue-900",
+        default: "bg-[#2458d3] text-white hover:bg-blue-700",
         outline:
-          "border border-white/80 bg-white/[.04] text-white hover:bg-white/[.14]",
+          "border border-blue-200 bg-white text-[#2458d3] hover:bg-blue-50",
         ghost: "text-slate-700 hover:bg-slate-100",
       },
     },

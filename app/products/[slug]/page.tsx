@@ -3,7 +3,6 @@ import { notFound } from "next/navigation";
 import { FloatingWhatsApp } from "../../../components/FloatingWhatsApp";
 import { Footer } from "../../../components/Footer";
 import { Navbar } from "../../../components/Navbar";
-import { PageLoader } from "../../../components/PageLoader";
 import { SaasProductDetails } from "../../../components/SaasProductDetails";
 import { saasProductList, saasProducts } from "../../../lib/saas-products";
 
@@ -67,7 +66,6 @@ export default async function ProductPage({ params }: ProductPageProps) {
 
   return (
     <>
-      <PageLoader />
       <Navbar />
       <SaasProductDetails product={product} />
       <Footer />

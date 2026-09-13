@@ -1,9 +1,4 @@
-import {
-  ArrowRight,
-  Handshake,
-  Lightbulb,
-  TrendingUp,
-} from "lucide-react";
+import { ArrowRight, Handshake, Lightbulb, TrendingUp } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -35,10 +30,10 @@ const stats = [
 
 export function About() {
   return (
-    <section id="about" className="bg-slate-50 py-20 md:py-24 lg:py-28">
+    <section id="about" className="section-space bg-slate-50">
       <div className="mx-auto grid max-w-7xl items-center gap-12 px-4 sm:px-6 lg:grid-cols-2 lg:gap-16 lg:px-8">
         <div className="relative">
-          <div className="relative aspect-[4/3] overflow-hidden rounded-2xl border border-slate-200 bg-blue-950 shadow-xl shadow-blue-950/10">
+          <div className="relative aspect-[4/3] overflow-hidden rounded-2xl border border-slate-200 bg-blue-950 shadow-sm">
             <Image
               className="object-cover"
               src="/about.png"
@@ -49,7 +44,7 @@ export function About() {
             <div className="absolute inset-0 bg-blue-950/15" />
           </div>
 
-          <div className="absolute -bottom-7 left-5 max-w-[280px] rounded-xl bg-blue-950 p-5 text-white shadow-xl shadow-blue-950/20 sm:left-8 sm:p-6">
+          <div className="absolute -bottom-7 left-5 max-w-[280px] rounded-xl bg-blue-950 p-5 text-white shadow-sm sm:left-8 sm:p-6">
             <p className="text-lg font-bold leading-snug">
               Driven by <span className="text-emerald-400">Technology.</span>
               <br />
@@ -61,14 +56,12 @@ export function About() {
         <div className="pt-8 lg:pt-0">
           <div className="mb-6 flex items-center gap-4">
             <span className="h-[2px] w-10 bg-emerald-400" />
-            <p className="text-xs font-semibold uppercase tracking-[0.22em] text-emerald-500 md:text-sm">
-              About AFT
-            </p>
+            <p className="eyebrow">About AFT</p>
           </div>
 
-          <h2 className="max-w-2xl text-3xl font-bold leading-tight tracking-tight text-blue-950 md:text-4xl lg:text-5xl">
+          <h2 className="section-title max-w-2xl">
             We Build Technology That Creates{" "}
-            <span className="text-emerald-500">Business Impact</span>
+            <span className="text-emerald-700">Business Impact</span>
           </h2>
 
           <div className="mt-6 max-w-2xl space-y-5 text-base leading-relaxed text-slate-600 md:text-lg">
@@ -99,10 +92,10 @@ export function About() {
             ))}
           </div>
 
-          <div className="mt-8 grid grid-cols-2 gap-6 border-t border-slate-200 pt-8 sm:grid-cols-4">
+          <div className="mt-8 grid grid-cols-2 gap-4 border-t border-slate-200 pt-8 sm:grid-cols-4">
             {stats.map(({ value, label }) => (
               <div key={`${value}-${label}`}>
-                <p className="text-2xl font-bold tracking-tight text-blue-950 md:text-3xl">
+                <p className="text-base font-bold tracking-tight text-blue-950">
                   {value}
                 </p>
                 <p className="mt-1 text-sm text-slate-500">{label}</p>
