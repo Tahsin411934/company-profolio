@@ -3,14 +3,16 @@
 import { ArrowRight, Menu, MessageCircle, Phone, X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { cn } from "../lib/utils";
 import { Button } from "./ui/button";
 
 const links = [
   "Home",
-  "About",
+  "Products",
   "Services",
+  "About",
   "Contact",
 ];
 
@@ -22,10 +24,18 @@ export function Navbar() {
   const [open, setOpen] = useState(false);
   const [pastBanner, setPastBanner] = useState(false);
   const [activeLink, setActiveLink] = useState("Home");
+  const pathname = usePathname();
+  const isHomePage = pathname === "/";
   const headerRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
     const updateActiveLink = () => {
+      if (!isHomePage) {
+        setPastBanner(true);
+        setActiveLink("");
+        return;
+      }
+
       const activationLine = (headerRef.current?.getBoundingClientRect().height ?? 80) + 1;
       const banner = document.getElementById("hero");
       setPastBanner(Boolean(banner && banner.getBoundingClientRect().bottom <= activationLine));
@@ -71,14 +81,14 @@ export function Navbar() {
       window.removeEventListener("resize", updateActiveLink);
       window.removeEventListener("hashchange", updateFromHash);
     };
-  }, []);
+  }, [isHomePage]);
 
   return (
     <header
       ref={headerRef}
       className={cn(
         "fixed inset-x-0 top-0 z-50 border-b border-slate-400/20 shadow-xl backdrop-blur-md transition-colors duration-300",
-        pastBanner ? "bg-blue-950/95" : "bg-transparent",
+        pastBanner ? "bg-blue-950/90" : "bg-transparent",
       )}
     >
       <nav className="relative mx-auto flex min-h-20 max-w-screen-2xl items-center justify-between gap-2 px-3 sm:px-6 lg:px-8 xl:grid xl:grid-cols-3 xl:gap-3" aria-label="Main navigation">
@@ -96,7 +106,7 @@ export function Navbar() {
                 activeLink === link
                   ? "text-emerald-400 after:absolute after:bottom-1 after:left-0 after:h-0.5 after:w-7 after:bg-emerald-400 xl:after:bottom-4 xl:after:w-full"
                   : "text-slate-200",
-              )} href={`#${getSectionId(link)}`} aria-current={activeLink === link ? "location" : undefined} onClick={() => { setActiveLink(link); setOpen(false); }}>
+              )} href={isHomePage ? `#${getSectionId(link)}` : `/#${getSectionId(link)}`} aria-current={activeLink === link ? "location" : undefined} onClick={() => { setActiveLink(link); setOpen(false); }}>
                 {link}
               </Link>
             ))}

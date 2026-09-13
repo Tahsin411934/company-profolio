@@ -1,120 +1,8 @@
 import { ArrowRight, Check, ExternalLink, Headphones, RefreshCw, ShieldCheck, Sparkles } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { saasProductList, type SaasProduct } from "../lib/saas-products";
 import { cn } from "../lib/utils";
-
-type Product = {
-  id: string;
-  category: string;
-  name: string;
-  subtitle: string;
-  description: string;
-  image: string | null;
-  imageAlt: string;
-  features: string[];
-  accent: string;
-  imageAreaClass: string;
-  badgeClass: string;
-  buttonClass: string;
-  outlineClass: string;
-  productUrl: string;
-  demoUrl: string | null;
-};
-
-const products: Product[] = [
-  {
-    id: "ecommerce",
-    category: "E-COMMERCE",
-    name: "E-commerce Solution",
-    subtitle: "All-in-One E-commerce Platform",
-    description:
-      "Launch, manage, and grow your online business from one powerful and easy-to-use platform.",
-    image: "/porducts/ecommerce.png",
-    imageAlt: "E-commerce Solution software preview",
-    features: [
-      "Product & Inventory Management",
-      "Order & Customer Management",
-      "Payment Integration",
-      "Modern Responsive Storefront",
-    ],
-    accent: "#0DB89B",
-    imageAreaClass: "bg-[linear-gradient(135deg,#EDFFFA_0%,#F7FFFC_100%)]",
-    badgeClass: "bg-[#DDF9F1] text-[#0A987F]",
-    buttonClass: "bg-[#0DB89B] hover:bg-[#0AA98E] focus-visible:ring-[#0DB89B]",
-    outlineClass: "border-[#0DB89B] text-[#0DB89B] hover:bg-[#E9FFFA]",
-    productUrl: "#contact",
-    demoUrl: "#contact",
-  },
-  {
-    id: "hrm",
-    category: "HR & PAYROLL",
-    name: "AFT HRM",
-    subtitle: "Complete Human Resource Management Solution",
-    description:
-      "Manage employees, attendance, leave, payroll, performance and HR operations from one centralized platform.",
-    image: "/porducts/hrm.png",
-    imageAlt: "AFT HRM dashboard software preview",
-    features: [
-      "Employee Management",
-      "Attendance & Leave",
-      "Payroll & Salary Management",
-      "KPI & Performance Tracking",
-    ],
-    accent: "#2783F3",
-    imageAreaClass: "bg-[linear-gradient(135deg,#EEF7FF_0%,#F8FBFF_100%)]",
-    badgeClass: "bg-[#E2F0FF] text-[#1D6ED2]",
-    buttonClass: "bg-[#2783F3] hover:bg-[#1E73DE] focus-visible:ring-[#2783F3]",
-    outlineClass: "border-[#2783F3] text-[#2783F3] hover:bg-[#EEF7FF]",
-    productUrl: "#contact",
-    demoUrl: "#contact",
-  },
-  {
-    id: "social-media-manager",
-    category: "SOCIAL MEDIA",
-    name: "Social Media Manager",
-    subtitle: "All-in-One Social Media Management Platform",
-    description:
-      "Plan, schedule, publish and manage your social media presence from one powerful dashboard.",
-    image: "/porducts/social-media-manager.png",
-    imageAlt: "Social Media Manager software preview",
-    features: [
-      "Multi-Platform Management",
-      "Post Scheduling",
-      "Analytics & Reports",
-      "Team Collaboration",
-    ],
-    accent: "#B42CC4",
-    imageAreaClass: "bg-[linear-gradient(135deg,#FFF1FC_0%,#FAF5FF_100%)]",
-    badgeClass: "bg-[#F8E5FB] text-[#9825A6]",
-    buttonClass: "bg-[#B42CC4] hover:bg-[#9F23AF] focus-visible:ring-[#B42CC4]",
-    outlineClass: "border-[#B42CC4] text-[#B42CC4] hover:bg-[#FFF1FC]",
-    productUrl: "#contact",
-    demoUrl: "#contact",
-  },
-  {
-    id: "bank-check-printer",
-    category: "FINANCE & UTILITIES",
-    name: "Bank Check Printer",
-    subtitle: "Business Check Printing Software",
-    description:
-      "A streamlined business utility for preparing and printing checks using configurable templates and printer-friendly layouts.",
-    image: null,
-    imageAlt: "Bank Check Printer software preview",
-    features: [
-      "Multiple Template Support",
-      "Custom Print Layouts",
-      "Batch Printing",
-      "Easy-to-Use Interface",
-    ],
-    accent: "#F38A17",
-    imageAreaClass: "bg-[linear-gradient(135deg,#FFF7EC_0%,#FFFCF7_100%)]",
-    badgeClass: "bg-[#FFF0DA] text-[#CC6E0B]",
-    buttonClass: "bg-[#F38A17] hover:bg-[#DA780F] focus-visible:ring-[#F38A17]",
-    outlineClass: "border-[#F38A17] text-[#F38A17] hover:bg-[#FFF7EC]",
-    productUrl: "#contact",
-    demoUrl: "#contact",
-  },
-];
 
 const trustItems = [
   { label: "Trusted by Businesses", Icon: Sparkles },
@@ -123,16 +11,16 @@ const trustItems = [
   { label: "Dedicated Support", Icon: Headphones },
 ];
 
-function ProductCard({ product }: { product: Product }) {
+function ProductCard({ product }: { product: SaasProduct }) {
   return (
     <article className="group flex overflow-hidden rounded-[18px] border border-[rgba(15,36,88,0.08)] bg-white shadow-[0_8px_30px_rgba(16,36,90,0.055)] transition-all duration-300 ease-out hover:-translate-y-[5px] hover:border-[rgba(15,36,88,0.14)] hover:shadow-[0_20px_45px_rgba(16,36,90,0.10)] sm:rounded-[22px]">
       <div className="flex min-h-full w-full flex-col">
         <div className={cn("px-4 pt-4 sm:px-6 sm:pt-6", product.imageAreaClass)}>
           <div className="relative h-[205px] w-full overflow-hidden sm:h-[255px] lg:h-[250px] xl:h-[270px]">
-            {product.image ? (
+            {product.heroImage ? (
               <Image
                 className="object-contain transition-transform duration-300 ease-out group-hover:scale-[1.015]"
-                src={product.image}
+                src={product.heroImage}
                 alt={product.imageAlt}
                 fill
                 sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 410px"
@@ -161,7 +49,7 @@ function ProductCard({ product }: { product: Product }) {
           </p>
 
           <ul className="mt-5 space-y-2">
-            {product.features.map((feature) => (
+            {product.homepageFeatures.map((feature) => (
               <li className="flex items-center gap-[9px] text-[13px] text-[#53657D] sm:text-[13.5px]" key={feature}>
                 <span
                   className="inline-flex h-[18px] w-[18px] shrink-0 items-center justify-center rounded-full text-white sm:h-[19px] sm:w-[19px]"
@@ -182,15 +70,13 @@ function ProductCard({ product }: { product: Product }) {
               View Details
               <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5" aria-hidden="true" />
             </Link>
-            {product.demoUrl ? (
-              <Link
-                className={cn("inline-flex h-11 w-full items-center justify-center gap-2 rounded-[10px] border px-5 text-sm font-bold transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 sm:h-[46px]", product.outlineClass)}
-                href={product.demoUrl}
-              >
-                Live Demo
-                <ExternalLink className="h-4 w-4" aria-hidden="true" />
-              </Link>
-            ) : null}
+            <Link
+              className={cn("inline-flex h-11 w-full items-center justify-center gap-2 rounded-[10px] border px-4 text-sm font-bold transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 sm:h-[46px] lg:px-3 xl:px-5", product.outlineClass)}
+              href={product.demoUrl ?? "#contact"}
+            >
+              Live Demo
+              <ExternalLink className="h-4 w-4" aria-hidden="true" />
+            </Link>
           </div>
         </div>
       </div>
@@ -201,6 +87,7 @@ function ProductCard({ product }: { product: Product }) {
 export function SaasProducts() {
   return (
     <section
+      id="products"
       className="relative overflow-hidden bg-[linear-gradient(180deg,#F7FBFF_0%,#FBFDFF_50%,#F7FAFC_100%)] py-[65px] sm:py-20 lg:pb-[110px] lg:pt-[100px]"
       aria-labelledby="saas-products-title"
     >
@@ -232,8 +119,8 @@ export function SaasProducts() {
         </div>
 
         <div className="mt-[55px] grid grid-cols-1 gap-[18px] md:grid-cols-2 md:gap-5 lg:grid-cols-3 lg:gap-5 xl:gap-6">
-          {products.map((product) => (
-            <ProductCard key={product.id} product={product} />
+          {saasProductList.map((product) => (
+            <ProductCard key={product.slug} product={product} />
           ))}
         </div>
 
