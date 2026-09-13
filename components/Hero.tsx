@@ -56,7 +56,7 @@ export function Hero() {
                 Innovative IT solutions to help businesses grow, transform, and
                 make a greater impact in the digital world.
               </p>
-              <div className="mt-8 flex flex-col gap-3 min-[480px]:flex-row min-[480px]:flex-wrap min-[480px]:items-center">
+              <div className="mt-8 flex  gap-3 min-[480px]:flex-row min-[480px]:flex-wrap min-[480px]:items-center">
                 <Button
                   className="group h-12 bg-gradient-to-r from-blue-700 to-indigo-600 px-6 shadow-md shadow-blue-700/15 transition-all duration-200 hover:-translate-y-0.5 hover:from-blue-800 hover:to-indigo-700 hover:shadow-lg hover:shadow-blue-700/20 focus-visible:ring-offset-4 focus-visible:ring-offset-blue-50"
                   href="#contact"
