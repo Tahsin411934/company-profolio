@@ -1,6 +1,7 @@
 import { ArrowRight, Check, ExternalLink, Headphones, RefreshCw, ShieldCheck, Sparkles } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { type CSSProperties } from "react";
 import { saasProductList, type SaasProduct } from "../lib/saas-products";
 import { cn } from "../lib/utils";
 
@@ -64,8 +65,12 @@ function ProductCard({ product }: { product: SaasProduct }) {
 
           <div className="mt-auto flex flex-col gap-[9px] pt-[26px] min-[520px]:flex-row min-[520px]:gap-3">
             <Link
-              className={cn("inline-flex h-11 w-full items-center justify-center gap-2 rounded-[10px] px-4 text-sm font-bold text-white transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 sm:h-[46px] lg:px-3 xl:px-5", product.buttonClass)}
+              className="inline-flex h-11 w-full items-center justify-center gap-2 rounded-[10px] px-4 text-sm font-bold text-white transition-colors duration-300 hover:brightness-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 sm:h-[46px] lg:px-3 xl:px-5"
               href={product.productUrl}
+              style={{
+                backgroundColor: product.accent,
+                "--tw-ring-color": product.accent,
+              } as CSSProperties}
             >
               View Details
               <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5" aria-hidden="true" />

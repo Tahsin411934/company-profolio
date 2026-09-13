@@ -1,0 +1,23 @@
+import type { MetadataRoute } from "next";
+import { saasProductList } from "../lib/saas-products";
+
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://aftsoftandlimited.com";
+
+export default function sitemap(): MetadataRoute.Sitemap {
+  const now = new Date();
+
+  return [
+    {
+      url: siteUrl,
+      lastModified: now,
+      changeFrequency: "weekly",
+      priority: 1,
+    },
+    ...saasProductList.map((product) => ({
+      url: `${siteUrl}/products/${product.slug}`,
+      lastModified: now,
+      changeFrequency: "monthly" as const,
+      priority: 0.8,
+    })),
+  ];
+}

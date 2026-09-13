@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { FloatingWhatsApp } from "../../../components/FloatingWhatsApp";
 import { Footer } from "../../../components/Footer";
@@ -14,7 +15,9 @@ export function generateStaticParams() {
   return saasProductList.map((product) => ({ slug: product.slug }));
 }
 
-export async function generateMetadata({ params }: ProductPageProps) {
+export async function generateMetadata({
+  params,
+}: ProductPageProps): Promise<Metadata> {
   const { slug } = await params;
   const product = saasProducts[slug];
 
@@ -22,12 +25,34 @@ export async function generateMetadata({ params }: ProductPageProps) {
     return {};
   }
 
+  const image = product.heroImage ?? "/banner.png";
+  const url = `/products/${product.slug}`;
+
   return {
     title: product.metaTitle,
     description: product.metaDescription,
+    alternates: {
+      canonical: url,
+    },
     openGraph: {
+      type: "website",
+      url,
       title: product.metaTitle,
       description: product.metaDescription,
+      images: [
+        {
+          url: image,
+          width: 1200,
+          height: 630,
+          alt: product.imageAlt,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: product.metaTitle,
+      description: product.metaDescription,
+      images: [image],
     },
   };
 }
