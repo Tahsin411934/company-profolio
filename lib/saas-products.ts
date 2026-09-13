@@ -96,13 +96,13 @@ export const saasProducts: Record<string, SaasProduct> = {
   hrm: {
     slug: "hrm",
     category: "HR & PAYROLL",
-    name: "AFT HRM",
+    name: "HRM",
     shortTitle: "Complete HR Management Solution",
     subtitle: "Complete Human Resource Management Solution",
     description:
       "Manage employees, attendance, leave, payroll, performance and HR operations from one centralized platform.",
     heroImage: "/porducts/hrm.png",
-    imageAlt: "AFT HRM dashboard software preview",
+    imageAlt: "HRM dashboard software preview",
     accent: "#2783F3",
     imageAreaClass: "bg-[linear-gradient(135deg,#EEF7FF_0%,#F8FBFF_100%)]",
     badgeClass: "bg-[#E2F0FF] text-[#1D6ED2]",
@@ -137,7 +137,7 @@ export const saasProducts: Record<string, SaasProduct> = {
       { title: "Performance tracking", description: "Monitor KPI and performance information without scattered spreadsheets." },
     ],
     highlightTitle: "Simplify HR. Empower Your Team.",
-    highlightText: "AFT HRM helps growing organizations reduce manual work and manage people operations with a cleaner system.",
+    highlightText: "HRM helps growing organizations reduce manual work and manage people operations with a cleaner system.",
     showcaseTitle: "Manage Your Entire Workforce from One Place",
     showcaseText:
       "Bring employee records, attendance, leave, payroll, performance, and reports into one centralized HR platform.",
@@ -152,8 +152,8 @@ export const saasProducts: Record<string, SaasProduct> = {
     workflowItems: ["Attendance Devices", "Payroll", "Email", "Reports", "Internal Systems"],
     productUrl: "/products/hrm",
     demoUrl: null,
-    metaTitle: "AFT HRM | Complete HR Management Software | AFT SOFT AND LIMITED",
-    metaDescription: "Manage employees, attendance, leave, payroll, performance, and HR operations with AFT HRM.",
+    metaTitle: "HRM | Complete HR Management Software | AFT SOFT AND LIMITED",
+    metaDescription: "Manage employees, attendance, leave, payroll, performance, and HR operations with HRM.",
   },
   "social-media-manager": {
     slug: "social-media-manager",
