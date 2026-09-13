@@ -109,7 +109,7 @@ export function Navbar() {
     <header
       ref={headerRef}
       className={cn(
-        "fixed inset-x-0 top-0 z-50 border-b border-blue-100 backdrop-blur-md transition-colors duration-300",
+        "fixed inset-x-0 top-0 z-50 border-b border-blue-100 backdrop-blur-md transition-colors duration-300 shadow-md",
         pastBanner ? "bg-blue-50/95" : "bg-blue-50",
       )}
     >
