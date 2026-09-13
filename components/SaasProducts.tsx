@@ -43,7 +43,7 @@ const products: Product[] = [
     buttonClass: "bg-[#0DB89B] hover:bg-[#0AA98E] focus-visible:ring-[#0DB89B]",
     outlineClass: "border-[#0DB89B] text-[#0DB89B] hover:bg-[#E9FFFA]",
     productUrl: "#contact",
-    demoUrl: null,
+    demoUrl: "#contact",
   },
   {
     id: "hrm",
@@ -66,7 +66,7 @@ const products: Product[] = [
     buttonClass: "bg-[#2783F3] hover:bg-[#1E73DE] focus-visible:ring-[#2783F3]",
     outlineClass: "border-[#2783F3] text-[#2783F3] hover:bg-[#EEF7FF]",
     productUrl: "#contact",
-    demoUrl: null,
+    demoUrl: "#contact",
   },
   {
     id: "social-media-manager",
@@ -89,7 +89,7 @@ const products: Product[] = [
     buttonClass: "bg-[#B42CC4] hover:bg-[#9F23AF] focus-visible:ring-[#B42CC4]",
     outlineClass: "border-[#B42CC4] text-[#B42CC4] hover:bg-[#FFF1FC]",
     productUrl: "#contact",
-    demoUrl: null,
+    demoUrl: "#contact",
   },
   {
     id: "bank-check-printer",
@@ -112,7 +112,7 @@ const products: Product[] = [
     buttonClass: "bg-[#F38A17] hover:bg-[#DA780F] focus-visible:ring-[#F38A17]",
     outlineClass: "border-[#F38A17] text-[#F38A17] hover:bg-[#FFF7EC]",
     productUrl: "#contact",
-    demoUrl: null,
+    demoUrl: "#contact",
   },
 ];
 
@@ -128,14 +128,14 @@ function ProductCard({ product }: { product: Product }) {
     <article className="group flex overflow-hidden rounded-[18px] border border-[rgba(15,36,88,0.08)] bg-white shadow-[0_8px_30px_rgba(16,36,90,0.055)] transition-all duration-300 ease-out hover:-translate-y-[5px] hover:border-[rgba(15,36,88,0.14)] hover:shadow-[0_20px_45px_rgba(16,36,90,0.10)] sm:rounded-[22px]">
       <div className="flex min-h-full w-full flex-col">
         <div className={cn("px-4 pt-4 sm:px-6 sm:pt-6", product.imageAreaClass)}>
-          <div className="relative h-[205px] w-full overflow-hidden sm:h-[255px] lg:h-[310px]">
+          <div className="relative h-[205px] w-full overflow-hidden sm:h-[255px] lg:h-[250px] xl:h-[270px]">
             {product.image ? (
               <Image
                 className="object-contain transition-transform duration-300 ease-out group-hover:scale-[1.015]"
                 src={product.image}
                 alt={product.imageAlt}
                 fill
-                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 600px"
+                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 410px"
               />
             ) : (
               <div className="flex h-full w-full items-center justify-center rounded-2xl border border-dashed border-[#F38A17]/30 bg-white/35 text-center text-sm font-semibold text-[#CC6E0B]">
@@ -145,12 +145,12 @@ function ProductCard({ product }: { product: Product }) {
           </div>
         </div>
 
-        <div className="flex flex-1 flex-col p-5 sm:p-6 lg:px-[30px] lg:pb-[30px] lg:pt-7">
+        <div className="flex flex-1 flex-col p-5 sm:p-6 lg:px-6 lg:pb-6 lg:pt-6 xl:px-7">
           <span className={cn("inline-flex h-[26px] w-fit items-center rounded-full px-3 text-[10px] font-bold uppercase tracking-[0.8px] sm:text-[11px]", product.badgeClass)}>
             {product.category}
           </span>
 
-          <h3 className="mt-4 text-2xl font-bold leading-[1.15] tracking-[-0.5px] text-[#10245A] sm:text-[26px] lg:text-[28px]">
+          <h3 className="mt-4 text-2xl font-bold leading-[1.15] tracking-[-0.5px] text-[#10245A] sm:text-[26px] lg:text-[25px] xl:text-[27px]">
             {product.name}
           </h3>
           <p className="mt-1.5 text-sm font-semibold text-[#203764] sm:text-[15px]">
@@ -176,10 +176,10 @@ function ProductCard({ product }: { product: Product }) {
 
           <div className="mt-auto flex flex-col gap-[9px] pt-[26px] min-[520px]:flex-row min-[520px]:gap-3">
             <Link
-              className={cn("inline-flex h-11 w-full items-center justify-center gap-2 rounded-[10px] px-5 text-sm font-bold text-white transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 sm:h-[46px]", product.buttonClass)}
+              className={cn("inline-flex h-11 w-full items-center justify-center gap-2 rounded-[10px] px-4 text-sm font-bold text-white transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 sm:h-[46px] lg:px-3 xl:px-5", product.buttonClass)}
               href={product.productUrl}
             >
-              View Product
+              View Details
               <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5" aria-hidden="true" />
             </Link>
             {product.demoUrl ? (
@@ -231,7 +231,7 @@ export function SaasProducts() {
           </p>
         </div>
 
-        <div className="mt-[55px] grid grid-cols-1 gap-[18px] md:grid-cols-2 md:gap-5 lg:gap-6">
+        <div className="mt-[55px] grid grid-cols-1 gap-[18px] md:grid-cols-2 md:gap-5 lg:grid-cols-3 lg:gap-5 xl:gap-6">
           {products.map((product) => (
             <ProductCard key={product.id} product={product} />
           ))}
