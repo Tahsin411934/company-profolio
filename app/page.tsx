@@ -5,6 +5,7 @@ import { Hero } from "../components/Hero";
 import { Navbar } from "../components/Navbar";
 import { PageLoader } from "../components/PageLoader";
 import { PageReveal } from "../components/PageReveal";
+import { SaasProducts } from "../components/SaasProducts";
 import { Services } from "../components/Services";
 
 export default function Home() {
@@ -14,6 +15,7 @@ export default function Home() {
       <Navbar />
       <PageReveal>
         <Hero />
+        <SaasProducts />
         <Services />
         <About />
         <Footer />
