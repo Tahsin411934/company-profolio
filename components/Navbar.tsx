@@ -104,8 +104,8 @@ export function Navbar() {
     <header
       ref={headerRef}
       className={cn(
-        "fixed inset-x-0 top-0 z-50 border-b border-white/10 backdrop-blur-md transition-colors duration-300",
-        pastBanner ? "bg-[#10245a]/95" : "bg-[#0b1938]/90",
+        "fixed inset-x-0 top-0 z-50 border-b border-blue-100 backdrop-blur-md transition-colors duration-300",
+        pastBanner ? "bg-blue-50/95" : "bg-blue-50",
       )}
     >
       <nav
@@ -121,7 +121,7 @@ export function Navbar() {
           }}
         >
           <Image
-            className="object-contain object-left brightness-125 contrast-125 saturate-125 drop-shadow-lg"
+            className="object-contain object-left brightness-0 opacity-90"
             src="/aft-navbar-logo-clean.png"
             alt="AFT SOFT AND LIMITED"
             fill
@@ -132,7 +132,7 @@ export function Navbar() {
         <div
           id="navbar-menu"
           className={cn(
-            "absolute inset-x-0 top-full border-b border-blue-200/20 bg-blue-950 px-4 pb-5 shadow-xl sm:px-6 xl:static xl:flex xl:flex-1 xl:justify-end xl:items-center xl:gap-8 xl:border-0 xl:bg-transparent xl:p-0 xl:shadow-none",
+            "absolute inset-x-0 top-full border-b border-blue-100 bg-blue-50 px-4 pb-5 shadow-xl sm:px-6 xl:static xl:flex xl:flex-1 xl:justify-end xl:items-center xl:gap-8 xl:border-0 xl:bg-transparent xl:p-0 xl:shadow-none",
             open ? "grid gap-4" : "hidden",
           )}
         >
@@ -141,10 +141,10 @@ export function Navbar() {
               <Link
                 key={link}
                 className={cn(
-                  "relative whitespace-nowrap py-3 text-sm font-semibold transition-colors hover:text-emerald-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-emerald-400 xl:py-7",
+                  "relative whitespace-nowrap py-3 text-sm font-semibold transition-colors hover:text-emerald-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-emerald-400 xl:py-7",
                   activeLink === link
-                    ? "text-emerald-400 after:absolute after:bottom-1 after:left-0 after:h-0.5 after:w-7 after:bg-emerald-400 xl:after:bottom-4 xl:after:w-full"
-                    : "text-slate-200",
+                    ? "text-emerald-700 after:absolute after:bottom-1 after:left-0 after:h-0.5 after:w-7 after:bg-emerald-700 xl:after:bottom-4 xl:after:w-full"
+                    : "text-slate-600",
                 )}
                 href={
                   isHomePage
@@ -164,7 +164,7 @@ export function Navbar() {
           <div className="flex items-center gap-2 xl:justify-end">
             <div className="hidden items-center gap-2 xl:flex">
               <a
-                className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-lg border border-emerald-400/40 text-emerald-400 transition-colors hover:bg-emerald-400 hover:text-blue-950 focus-visible:outline focus-visible:outline-2 focus-visible:outline-emerald-400"
+                className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-lg border border-emerald-400/40 text-emerald-700 transition-colors hover:bg-emerald-100 hover:text-blue-950 focus-visible:outline focus-visible:outline-2 focus-visible:outline-emerald-400"
                 href="https://wa.me/8801323814588"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -175,7 +175,7 @@ export function Navbar() {
                 <MessageCircle className="h-5 w-5" aria-hidden="true" />
               </a>
               <a
-                className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-lg border border-white/30 text-white transition-colors hover:bg-white/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-emerald-400"
+                className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-lg border border-blue-200 text-blue-950 transition-colors hover:bg-blue-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-emerald-400"
                 href="tel:+8801323814588"
                 aria-label="Call us"
                 title="Call us"
@@ -198,7 +198,7 @@ export function Navbar() {
         </div>
         <div className="flex items-center gap-1 xl:hidden">
           <a
-            className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-lg border border-emerald-400/40 text-emerald-400 transition-colors hover:bg-emerald-400 hover:text-blue-950 focus-visible:outline focus-visible:outline-2 focus-visible:outline-emerald-400"
+            className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-lg border border-emerald-400/40 text-emerald-700 transition-colors hover:bg-emerald-100 hover:text-blue-950 focus-visible:outline focus-visible:outline-2 focus-visible:outline-emerald-400"
             href="https://wa.me/8801323814588"
             target="_blank"
             rel="noopener noreferrer"
@@ -209,7 +209,7 @@ export function Navbar() {
             <MessageCircle className="h-5 w-5" aria-hidden="true" />
           </a>
           <a
-            className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-lg border border-white/30 text-white transition-colors hover:bg-white/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-emerald-400"
+            className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-lg border border-blue-200 text-blue-950 transition-colors hover:bg-blue-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-emerald-400"
             href="tel:+8801323814588"
             aria-label="Call us"
             title="Call us"
@@ -219,7 +219,7 @@ export function Navbar() {
           </a>
           <button
             id="menu-toggle"
-            className=" inline-flex h-11 w-11 items-center justify-center justify-self-end rounded-lg text-white hover:bg-white/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-emerald-400 xl:hidden"
+            className=" inline-flex h-11 w-11 items-center justify-center justify-self-end rounded-lg text-blue-950 hover:bg-blue-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-emerald-400 xl:hidden"
             aria-label={open ? "Close navigation" : "Open navigation"}
             aria-expanded={open}
             aria-controls="navbar-menu"
