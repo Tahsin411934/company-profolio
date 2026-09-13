@@ -10,8 +10,8 @@ export default function Home() {
   return (
     <main id="top">
       <PageLoader />
+      <Navbar />
       <PageReveal>
-        <Navbar />
         <Hero />
         <Services />
         <About />

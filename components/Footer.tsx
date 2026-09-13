@@ -2,7 +2,7 @@ import { Mail, MapPin, Phone } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
-const footerLinks = ["Home", "About", "Services", "Portfolio", "Contact"];
+const footerLinks = ["Home", "About", "Services", "Contact"];
 
 function getLinkHref(label: string) {
   return label === "Home" ? "#top" : `#${label.toLowerCase()}`;
@@ -10,7 +10,7 @@ function getLinkHref(label: string) {
 
 export function Footer() {
   return (
-    <footer className="bg-blue-950 text-white">
+    <footer id="contact" className="bg-blue-950 text-white">
       <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
         <div className="grid gap-10 md:grid-cols-[1.2fr_0.8fr_1fr]">
           <div>
@@ -61,7 +61,7 @@ export function Footer() {
               </p>
               <p className="flex items-center gap-3">
                 <Phone className="h-4 w-4 text-emerald-400" />
-                +880 1700-000000
+                01323814588
               </p>
               <p className="flex items-center gap-3">
                 <MapPin className="h-4 w-4 text-emerald-400" />
