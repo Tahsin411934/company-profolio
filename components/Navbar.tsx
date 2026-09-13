@@ -148,7 +148,7 @@ export function Navbar() {
             open ? "grid gap-4" : "hidden",
           )}
         >
-          <div className="flex flex-col xl:flex-row xl:items-center xl:justify-center xl:gap-4">
+          <div className="flex flex-col xl:flex-row xl:items-center xl:justify-center xl:gap-8">
             {links.map((link) => (
               <Link
                 key={link}
