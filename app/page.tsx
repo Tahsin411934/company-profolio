@@ -1,4 +1,5 @@
 import { About } from "../components/About";
+import { FloatingWhatsApp } from "../components/FloatingWhatsApp";
 import { Footer } from "../components/Footer";
 import { Hero } from "../components/Hero";
 import { Navbar } from "../components/Navbar";
@@ -17,6 +18,7 @@ export default function Home() {
         <About />
         <Footer />
       </PageReveal>
+      <FloatingWhatsApp />
     </main>
   );
 }

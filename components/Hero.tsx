@@ -14,6 +14,7 @@ export function Hero() {
   return (
     <>
       <section
+        id="hero"
         className="relative min-h-[680px] overflow-hidden bg-blue-950 text-white max-[1024px]:min-h-[640px] max-[640px]:min-h-screen"
         aria-labelledby="hero-title"
       >

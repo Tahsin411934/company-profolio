@@ -20,12 +20,15 @@ function getSectionId(link: string) {
 
 export function Navbar() {
   const [open, setOpen] = useState(false);
+  const [pastBanner, setPastBanner] = useState(false);
   const [activeLink, setActiveLink] = useState("Home");
   const headerRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
     const updateActiveLink = () => {
       const activationLine = (headerRef.current?.getBoundingClientRect().height ?? 80) + 1;
+      const banner = document.getElementById("hero");
+      setPastBanner(Boolean(banner && banner.getBoundingClientRect().bottom <= activationLine));
       let currentLink = "Home";
       let closestTop = -Infinity;
 
@@ -57,6 +60,7 @@ export function Navbar() {
       else updateActiveLink();
     };
 
+    updateActiveLink();
     updateFromHash();
     window.addEventListener("scroll", updateActiveLink, { passive: true });
     window.addEventListener("resize", updateActiveLink);
@@ -70,7 +74,13 @@ export function Navbar() {
   }, []);
 
   return (
-    <header ref={headerRef} className="fixed inset-x-0 top-0 z-50 border-b border-slate-400/20 bg-blue-950/95 shadow-xl backdrop-blur-md">
+    <header
+      ref={headerRef}
+      className={cn(
+        "fixed inset-x-0 top-0 z-50 border-b border-slate-400/20 shadow-xl backdrop-blur-md transition-colors duration-300",
+        pastBanner ? "bg-blue-950/95" : "bg-transparent",
+      )}
+    >
       <nav className="relative mx-auto flex min-h-20 max-w-screen-2xl items-center justify-between gap-2 px-3 sm:px-6 lg:px-8 xl:grid xl:grid-cols-3 xl:gap-3" aria-label="Main navigation">
         <Link className="relative block h-14 w-36 shrink-0 overflow-hidden sm:w-60" href="/" onClick={() => { setActiveLink("Home"); setOpen(false); }}>
           <Image className="object-contain object-left brightness-125 contrast-125 saturate-125 drop-shadow-lg" src="/aft-navbar-logo-clean.png" alt="AFT SOFT AND LIMITED" fill priority sizes="(min-width: 640px) 240px, 144px" />
