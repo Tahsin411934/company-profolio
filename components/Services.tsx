@@ -127,7 +127,7 @@ export function Services() {
                   <span className="grid h-12 w-12 place-items-center rounded-xl bg-blue-50 text-[#2458d3]">
                     <Icon className="h-6 w-6" aria-hidden="true" />
                   </span>
-                  <span className="text-xs font-semibold tracking-widest text-slate-400">
+                  <span className="text-sm font-semibold tracking-widest text-slate-400">
                     {service.number}
                   </span>
                 </div>
@@ -141,7 +141,7 @@ export function Services() {
                   {service.features.map((feature) => (
                     <li
                       key={feature}
-                      className="flex items-start gap-2 text-sm leading-relaxed text-slate-600"
+                      className="flex items-start gap-2 text-base leading-relaxed text-slate-600"
                     >
                       <Check
                         className="mt-1 h-4 w-4 shrink-0 text-emerald-700"

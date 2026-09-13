@@ -40,7 +40,7 @@ function ProductImage({
   return (
     <div
       className={cn(
-        "relative overflow-hidden rounded-[22px] p-5 sm:p-7",
+        "relative overflow-hidden rounded-[22px] px-5 sm:p-7",
         product.imageAreaClass,
         className,
       )}
@@ -109,7 +109,7 @@ export function SaasProductDetails({ product }: { product: SaasProduct }) {
           <div>
             <span
               className={cn(
-                "inline-flex h-8 items-center rounded-full px-4 text-xs font-bold uppercase tracking-[1.8px]",
+                "inline-flex h-8 items-center rounded-full px-4 text-sm font-bold uppercase tracking-[1.8px]",
                 product.badgeClass,
               )}
             >
@@ -144,10 +144,10 @@ export function SaasProductDetails({ product }: { product: SaasProduct }) {
                 <CheckCircle2 className="h-5 w-5" aria-hidden="true" />
               </span>
               <div>
-                <h2 className="text-sm font-bold text-[#10245A]">
+                <h2 className="text-base font-bold text-[#10245A]">
                   {item.title}
                 </h2>
-                <p className="mt-1 text-xs leading-relaxed text-[#687991]">
+                <p className="mt-1 text-sm leading-relaxed text-[#687991]">
                   {item.description}
                 </p>
               </div>
@@ -168,7 +168,7 @@ export function SaasProductDetails({ product }: { product: SaasProduct }) {
             <h2 className="mt-4 text-[30px] font-extrabold leading-tight tracking-[-0.8px] text-[#10245A] sm:text-[40px]">
               Why Choose {product.name}?
             </h2>
-            <p className="mt-4 max-w-2xl text-[15px] leading-[1.7] text-[#687991]">
+            <p className="mt-4 max-w-2xl text-base leading-[1.7] text-[#687991]">
               {product.highlightText}
             </p>
             <div className="mt-8 grid gap-4 sm:grid-cols-2">
@@ -180,7 +180,7 @@ export function SaasProductDetails({ product }: { product: SaasProduct }) {
                   <h3 className="text-base font-bold text-[#10245A]">
                     {item.title}
                   </h3>
-                  <p className="mt-2 text-sm leading-relaxed text-[#687991]">
+                  <p className="mt-2 text-base leading-relaxed text-[#687991]">
                     {item.description}
                   </p>
                 </div>
@@ -198,7 +198,7 @@ export function SaasProductDetails({ product }: { product: SaasProduct }) {
             <h3 className="mt-8 text-[32px] font-extrabold leading-tight tracking-[-0.8px]">
               {product.highlightTitle}
             </h3>
-            <p className="mt-4 text-sm leading-[1.7] text-white/80">
+            <p className="mt-4 text-base leading-[1.7] text-white/80">
               {product.highlightText}
             </p>
           </div>
@@ -235,7 +235,7 @@ export function SaasProductDetails({ product }: { product: SaasProduct }) {
                   <h3 className="mt-4 text-base font-bold text-[#10245A]">
                     {feature}
                   </h3>
-                  <p className="mt-2 text-sm leading-relaxed text-[#687991]">
+                  <p className="mt-2 text-base leading-relaxed text-[#687991]">
                     Designed to keep your daily work clear, organized, and
                     easier to manage.
                   </p>
@@ -262,13 +262,13 @@ export function SaasProductDetails({ product }: { product: SaasProduct }) {
             <h2 className="mt-4 text-[30px] font-extrabold leading-tight tracking-[-0.8px] text-[#10245A] sm:text-[40px]">
               {product.showcaseTitle}
             </h2>
-            <p className="mt-4 text-[15px] leading-[1.7] text-[#687991]">
+            <p className="mt-4 text-base leading-[1.7] text-[#687991]">
               {product.showcaseText}
             </p>
             <ul className="mt-7 space-y-3">
               {product.showcaseChecks.map((item) => (
                 <li
-                  className="flex items-center gap-3 text-sm font-medium text-[#53657D]"
+                  className="flex items-center gap-3 text-base font-medium text-[#53657D]"
                   key={item}
                 >
                   <span
@@ -307,7 +307,7 @@ export function SaasProductDetails({ product }: { product: SaasProduct }) {
                 <h3 className="text-lg font-bold text-[#10245A]">
                   {item.title}
                 </h3>
-                <p className="mt-3 text-sm leading-relaxed text-[#687991]">
+                <p className="mt-3 text-base leading-relaxed text-[#687991]">
                   {item.description}
                 </p>
               </div>
@@ -332,12 +332,12 @@ export function SaasProductDetails({ product }: { product: SaasProduct }) {
                   key={item}
                 >
                   <span
-                    className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-sm font-bold text-white"
+                    className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-base font-bold text-white"
                     style={{ backgroundColor: product.accent }}
                   >
                     {index + 1}
                   </span>
-                  <span className="text-sm font-bold text-[#10245A]">
+                  <span className="text-base font-bold text-[#10245A]">
                     {item}
                   </span>
                 </div>
@@ -355,7 +355,7 @@ export function SaasProductDetails({ product }: { product: SaasProduct }) {
                 <h2 className="text-[30px] font-extrabold leading-tight tracking-[-0.8px] sm:text-[40px]">
                   Ready to Get Started with {product.name}?
                 </h2>
-                <p className="mt-4 max-w-2xl text-sm leading-[1.7] text-white/75 sm:text-base">
+                <p className="mt-4 max-w-2xl text-base leading-[1.7] text-white/75 sm:text-base">
                   Talk with AFT SOFT AND LIMITED about your workflow, goals, and
                   the right product setup for your business.
                 </p>

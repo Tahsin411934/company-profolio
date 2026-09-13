@@ -4,7 +4,7 @@ import { type AnchorHTMLAttributes, type ReactNode } from "react";
 import { cn } from "../../lib/utils";
 
 const buttonVariants = cva(
-  "inline-flex h-12 items-center justify-center gap-2 whitespace-nowrap rounded-lg px-5 text-sm font-semibold shadow-sm transition-all duration-200 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 disabled:pointer-events-none disabled:opacity-50",
+  "inline-flex h-12 items-center justify-center gap-2 whitespace-nowrap rounded-lg px-5 text-base font-semibold shadow-sm transition-all duration-200 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 disabled:pointer-events-none disabled:opacity-50",
   {
     variants: {
       variant: {

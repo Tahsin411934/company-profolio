@@ -85,7 +85,7 @@ export function About() {
                   <Icon className="h-5 w-5" />
                 </div>
                 <h3 className="font-semibold text-blue-950">{title}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-slate-500">
+                <p className="mt-2 text-base leading-relaxed text-slate-500">
                   {description}
                 </p>
               </div>
@@ -98,7 +98,7 @@ export function About() {
                 <p className="text-base font-bold tracking-tight text-blue-950">
                   {value}
                 </p>
-                <p className="mt-1 text-sm text-slate-500">{label}</p>
+                <p className="mt-1 text-base text-slate-500">{label}</p>
               </div>
             ))}
           </div>

@@ -54,7 +54,7 @@ function ProductCard({ product }: { product: SaasProduct }) {
           <h3 className="mt-4 text-2xl font-bold leading-[1.15] tracking-[-0.5px] text-[#10245A] sm:text-[26px] lg:text-[25px] xl:text-[27px]">
             {product.name}
           </h3>
-          <p className="mt-1.5 text-sm font-semibold text-[#203764] sm:text-[15px]">
+          <p className="mt-1.5 text-base font-semibold text-[#203764]">
             {product.subtitle}
           </p>
           <p className="mt-3 text-base leading-relaxed text-slate-600">
@@ -64,7 +64,7 @@ function ProductCard({ product }: { product: SaasProduct }) {
           <ul className="mt-5 space-y-2">
             {product.homepageFeatures.map((feature) => (
               <li
-                className="flex items-center gap-[9px] text-[13px] text-[#53657D] sm:text-[13.5px]"
+                className="flex items-center gap-[9px] text-base leading-relaxed text-[#53657D]"
                 key={feature}
               >
                 <span

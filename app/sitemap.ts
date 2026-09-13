@@ -1,7 +1,8 @@
 import type { MetadataRoute } from "next";
 import { saasProductList } from "../lib/saas-products";
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://aftsoftandlimited.com";
+const siteUrl =
+  process.env.NEXT_PUBLIC_SITE_URL ?? "https://aftsoftandlimited.com";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date();
@@ -12,6 +13,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: now,
       changeFrequency: "weekly",
       priority: 1,
+    },
+    {
+      url: `${siteUrl}/career`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.6,
     },
     ...saasProductList.map((product) => ({
       url: `${siteUrl}/products/${product.slug}`,

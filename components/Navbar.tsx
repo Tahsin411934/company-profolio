@@ -1,14 +1,13 @@
 "use client";
 
 import { ArrowRight, Menu, MessageCircle, Phone, X } from "lucide-react";
-import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { cn } from "../lib/utils";
 import { Button } from "./ui/button";
 
-const links = ["Home", "Products", "Services", "About", "Contact"];
+const links = ["Home", "Products", "Services", "About", "Career", "Contact"];
 
 function getSectionId(link: string) {
   return link === "Home" ? "top" : link.toLowerCase().replace(" ", "-");
@@ -26,7 +25,13 @@ export function Navbar() {
     const updateActiveLink = () => {
       if (!isHomePage) {
         setPastBanner(true);
-        setActiveLink(pathname.startsWith("/products/") ? "Products" : "");
+        setActiveLink(
+          pathname === "/career"
+            ? "Career"
+            : pathname.startsWith("/products/")
+              ? "Products"
+              : "",
+        );
         return;
       }
 
@@ -42,7 +47,7 @@ export function Navbar() {
       let closestTop = -Infinity;
 
       for (const link of links) {
-        if (link === "Home") continue;
+        if (link === "Home" || link === "Career") continue;
         const section = document.getElementById(getSectionId(link));
 
         if (!section) {
@@ -109,49 +114,64 @@ export function Navbar() {
       )}
     >
       <nav
-        className="relative mx-auto flex min-h-20 max-w-7xl items-center justify-between gap-2 px-3 sm:px-6 lg:px-8 xl:gap-8"
+        className="relative mx-auto flex min-h-20 max-w-7xl items-center justify-between gap-2 px-3 sm:px-6 lg:px-8 xl:grid xl:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] xl:gap-6"
         aria-label="Main navigation"
       >
         <Link
-          className="relative block h-12 w-36 shrink-0 overflow-hidden sm:w-48"
+          className="relative block h-12 w-36 shrink-0 overflow-hidden sm:w-48 xl:justify-self-start"
           href="/"
           onClick={() => {
             setActiveLink("Home");
             setOpen(false);
           }}
         >
-          <Image
-            className="object-contain object-left brightness-0 opacity-90"
-            src="/aft-navbar-logo-clean.png"
-            alt="AFT SOFT AND LIMITED"
-            fill
-            priority
-            sizes="(min-width: 640px) 192px, 144px"
+          <span
+            role="img"
+            aria-label="AFT SOFT AND LIMITED"
+            className="block h-full w-full bg-blue-900"
+            style={{
+              maskImage: "url('/aft-navbar-logo-clean.png')",
+              maskSize: "contain",
+              maskRepeat: "no-repeat",
+              maskPosition: "left center",
+              WebkitMaskImage: "url('/aft-navbar-logo-clean.png')",
+              WebkitMaskSize: "contain",
+              WebkitMaskRepeat: "no-repeat",
+              WebkitMaskPosition: "left center",
+            }}
           />
         </Link>
         <div
           id="navbar-menu"
           className={cn(
-            "absolute inset-x-0 top-full border-b border-blue-100 bg-blue-50 px-4 pb-5 shadow-xl sm:px-6 xl:static xl:flex xl:flex-1 xl:justify-end xl:items-center xl:gap-8 xl:border-0 xl:bg-transparent xl:p-0 xl:shadow-none",
+            "absolute inset-x-0 top-full border-b border-blue-100 bg-blue-50 px-4 pb-5 shadow-xl sm:px-6 xl:contents",
             open ? "grid gap-4" : "hidden",
           )}
         >
-          <div className="flex flex-col xl:flex-row xl:items-center xl:justify-center xl:gap-5">
+          <div className="flex flex-col xl:flex-row xl:items-center xl:justify-center xl:gap-4">
             {links.map((link) => (
               <Link
                 key={link}
                 className={cn(
-                  "relative whitespace-nowrap py-3 text-sm font-semibold transition-colors hover:text-emerald-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-emerald-400 xl:py-7",
+                  "relative whitespace-nowrap py-3 text-base font-semibold transition-colors hover:text-emerald-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-emerald-400 xl:py-7",
                   activeLink === link
                     ? "text-emerald-700 after:absolute after:bottom-1 after:left-0 after:h-0.5 after:w-7 after:bg-emerald-700 xl:after:bottom-4 xl:after:w-full"
                     : "text-slate-600",
                 )}
                 href={
-                  isHomePage
-                    ? `#${getSectionId(link)}`
-                    : `/#${getSectionId(link)}`
+                  link === "Career"
+                    ? "/career"
+                    : isHomePage
+                      ? `#${getSectionId(link)}`
+                      : `/#${getSectionId(link)}`
                 }
-                aria-current={activeLink === link ? "location" : undefined}
+                aria-current={
+                  activeLink === link
+                    ? link === "Career"
+                      ? "page"
+                      : "location"
+                    : undefined
+                }
                 onClick={() => {
                   setActiveLink(link);
                   setOpen(false);
@@ -161,7 +181,7 @@ export function Navbar() {
               </Link>
             ))}
           </div>
-          <div className="flex items-center gap-2 xl:justify-end">
+          <div className="flex items-center gap-2 xl:justify-self-end">
             <div className="hidden items-center gap-2 xl:flex">
               <a
                 className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-lg border border-emerald-300 bg-gradient-to-br from-white to-emerald-100 text-emerald-800 transition-colors hover:from-emerald-50 hover:to-teal-200 hover:text-blue-950 focus-visible:outline focus-visible:outline-2 focus-visible:outline-emerald-400"

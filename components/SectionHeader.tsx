@@ -16,7 +16,7 @@ export function SectionHeader({
       <h2 id={id} className="section-title mt-4">
         {title}
       </h2>
-      <p className="mx-auto mt-5 max-w-2xl text-base leading-relaxed text-slate-600">
+      <p className="mx-auto mt-5 max-w-2xl text-lg leading-relaxed text-slate-600">
         {children}
       </p>
     </div>

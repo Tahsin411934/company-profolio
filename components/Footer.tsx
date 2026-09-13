@@ -26,11 +26,11 @@ export function Footer() {
                 sizes="224px"
               />
             </Link>
-            <p className="mt-5 max-w-sm text-sm leading-relaxed text-slate-300">
+            <p className="mt-5 max-w-sm text-base leading-relaxed text-slate-300">
               Reliable web, mobile, software, and digital solutions for modern
               businesses ready to grow with technology.
             </p>
-            <div className="mt-7 space-y-4 text-sm text-slate-300">
+            <div className="mt-7 space-y-4 text-base text-slate-300">
               {/* Existing contact address retained; confirm domain mismatch with aftsoftandlimited.com before changing. */}
               <a
                 className="flex items-center gap-3 hover:text-white"
@@ -63,26 +63,34 @@ export function Footer() {
           </div>
           <div className="grid grid-cols-2 gap-8 sm:grid-cols-[0.7fr_1fr_1.2fr]">
             <nav aria-label="Company">
-              <h2 className="text-sm font-bold text-white">Company</h2>
+              <h2 className="text-base font-bold text-white">Company</h2>
               <div className="mt-5 grid gap-4">
-                {["Home", "About", "Services", "Contact"].map((label) => (
-                  <Link
-                    key={label}
-                    className="text-sm text-slate-300 transition-colors hover:text-emerald-300"
-                    href={label === "Home" ? "/" : `/#${label.toLowerCase()}`}
-                  >
-                    {label}
-                  </Link>
-                ))}
+                {["Home", "About", "Services", "Career", "Contact"].map(
+                  (label) => (
+                    <Link
+                      key={label}
+                      className="text-base text-slate-300 transition-colors hover:text-emerald-300"
+                      href={
+                        label === "Career"
+                          ? "/career"
+                          : label === "Home"
+                            ? "/"
+                            : `/#${label.toLowerCase()}`
+                      }
+                    >
+                      {label}
+                    </Link>
+                  ),
+                )}
               </div>
             </nav>
             <nav aria-label="Products">
-              <h2 className="text-sm font-bold text-white">Products</h2>
+              <h2 className="text-base font-bold text-white">Products</h2>
               <div className="mt-5 grid gap-4">
                 {saasProductList.map((product) => (
                   <Link
                     key={product.slug}
-                    className="text-sm leading-relaxed text-slate-300 transition-colors hover:text-emerald-300"
+                    className="text-base leading-relaxed text-slate-300 transition-colors hover:text-emerald-300"
                     href={product.productUrl}
                   >
                     {product.name}
@@ -91,12 +99,12 @@ export function Footer() {
               </div>
             </nav>
             <nav aria-label="Services" className="col-span-2 sm:col-span-1">
-              <h2 className="text-sm font-bold text-white">Services</h2>
+              <h2 className="text-base font-bold text-white">Services</h2>
               <div className="mt-5 grid gap-4">
                 {services.map((service) => (
                   <Link
                     key={service}
-                    className="text-sm text-slate-300 transition-colors hover:text-emerald-300"
+                    className="text-base text-slate-300 transition-colors hover:text-emerald-300"
                     href="/#services"
                   >
                     {service}
