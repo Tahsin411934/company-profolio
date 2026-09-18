@@ -1,9 +1,32 @@
 "use client";
 
 import { ArrowRight, CheckCircle2, Loader2, ShieldCheck, Store } from "lucide-react";
-import { useFormState } from "react-dom";
+import { useFormState, useFormStatus } from "react-dom";
 import Link from "next/link";
 import { registerStoreOwner } from "./actions";
+
+function SubmitButton() {
+  const { pending } = useFormStatus();
+  return (
+    <button
+      type="submit"
+      disabled={pending}
+      className="w-full inline-flex h-12 items-center justify-center gap-2 rounded-lg bg-[#0DB89B] px-6 text-base font-bold text-white transition-all duration-200 hover:bg-[#0AA98E] hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0DB89B] focus-visible:ring-offset-4 disabled:opacity-50 disabled:pointer-events-none"
+    >
+      {pending ? (
+        <>
+          <Loader2 className="h-5 w-5 animate-spin" />
+          Registering...
+        </>
+      ) : (
+        <>
+          Create My Store
+          <ArrowRight className="h-4 w-4" />
+        </>
+      )}
+    </button>
+  );
+}
 
 function SuccessView({ data, message }: { data: any; message: string }) {
   return (
@@ -14,7 +37,7 @@ function SuccessView({ data, message }: { data: any; message: string }) {
             E-COMMERCE
           </span>
           <h1 className="mt-6 max-w-2xl text-[34px] font-extrabold leading-[1.08] tracking-[-1px] text-[#10245A] sm:text-[44px] lg:text-[54px]">
-            Store Registered Successfully!
+            Registration Complete!
           </h1>
         </div>
       </section>
@@ -24,10 +47,10 @@ function SuccessView({ data, message }: { data: any; message: string }) {
           <div className="rounded-[22px] border border-[#0DB89B]/20 bg-[#EDFFFA] p-8 sm:p-10 text-center">
             <CheckCircle2 className="mx-auto h-14 w-14 text-[#0DB89B]" />
             <h2 className="mt-6 text-[28px] font-extrabold tracking-[-0.8px] text-[#10245A]">
-              Registration Complete
+              Your Store Is Ready
             </h2>
             <p className="mt-3 text-base leading-[1.7] text-[#687991]">
-              {message || "Your store has been created."}
+              {message || "Your store has been created. Please login to continue."}
             </p>
             <div className="mt-6 rounded-xl bg-white border border-[#0DB89B]/20 p-4 text-left">
               <p className="text-xs font-bold uppercase tracking-wider text-[#0A987F] mb-2">Store URL</p>
@@ -40,18 +63,12 @@ function SuccessView({ data, message }: { data: any; message: string }) {
                 {data?.store_url || "N/A"}
               </a>
             </div>
-            <div className="mt-4 rounded-xl bg-white border border-[#0DB89B]/20 p-4 text-left">
-              <p className="text-xs font-bold uppercase tracking-wider text-[#0A987F] mb-2">Bearer Token</p>
-              <code className="block break-all text-xs text-slate-600 bg-slate-50 p-2 rounded">
-                {data?.token || "N/A"}
-              </code>
-            </div>
             <div className="mt-6 flex flex-col sm:flex-row gap-3 justify-center">
               <a
-                href="/products/ecommerce"
+                href="/login"
                 className="inline-flex h-12 items-center justify-center gap-2 rounded-lg bg-[#0DB89B] px-6 text-base font-semibold text-white transition-colors hover:bg-[#0AA98E]"
               >
-                Visit Your Store
+                Login Now
               </a>
               <button
                 onClick={() => window.location.reload()}
@@ -249,7 +266,7 @@ export default function StoreRegisterPage() {
                   <p className="mt-1 text-xs text-slate-400">
                     Your store URL:{" "}
                     <code className="text-[#0DB89B]">
-                      {state?.data?.store?.slug || "your-slug"}.onehaatbd.com
+                      {state?.data?.store?.slug || "your-slug"}.aftsoftandlimited.com
                     </code>
                   </p>
                   {state?.errors?.store_slug && (
@@ -287,14 +304,7 @@ export default function StoreRegisterPage() {
               </div>
             </div>
 
-            <button
-              type="submit"
-              className="w-full inline-flex h-12 items-center justify-center gap-2 rounded-lg bg-[#0DB89B] px-6 text-base font-bold text-white transition-all duration-200 hover:bg-[#0AA98E] hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0DB89B] focus-visible:ring-offset-4 disabled:opacity-50 disabled:pointer-events-none"
-            >
-              <Loader2 className="h-5 w-5 animate-spin" />
-              Create My Store
-              <ArrowRight className="h-4 w-4" />
-            </button>
+            <SubmitButton />
 
             {state?.message && !state?.success && (
               <p className="mt-3 text-center text-sm text-red-500">{state.message}</p>

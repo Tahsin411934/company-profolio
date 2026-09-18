@@ -4,7 +4,7 @@ import { revalidatePath } from "next/cache";
 
 const API_URL = "https://admin.onehaatbd.com/api/v1/register/store-owner";
 
-export async function registerStoreOwner(formData: FormData) {
+export async function registerStoreOwner(prevState: any, formData: FormData) {
   const data: Record<string, string> = {};
   for (const [key, value] of formData.entries()) {
     if (value !== null && value !== undefined) {
@@ -22,22 +22,30 @@ export async function registerStoreOwner(formData: FormData) {
       body: JSON.stringify(data),
     });
 
-    const result = await res.json();
+    const body = await res.json();
 
     if (!res.ok) {
       return {
         success: false,
-        errors: result.errors || {},
-        message: result.message || "Registration failed.",
+        errors: body.errors || {},
+        message: body.message || "Registration failed.",
       };
     }
+
+    const responseData = body.data || body;
+    const storeUrl = responseData.store_url || "";
+    const storeInfo = responseData.store || {};
 
     revalidatePath("/store-register");
 
     return {
       success: true,
-      data: result.data || result,
-      message: result.message || "Registration successful.",
+      data: {
+        ...responseData,
+        store_url: storeUrl,
+        store: storeInfo,
+      },
+      message: body.message || "Registration successful. Please login.",
     };
   } catch {
     return {
