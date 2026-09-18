@@ -65,7 +65,7 @@ function SuccessView({ data, message }: { data: any; message: string }) {
             </div>
             <div className="mt-6 flex flex-col sm:flex-row gap-3 justify-center">
               <a
-                href="/login"
+                href="https://onehaatbd.com/login"
                 className="inline-flex h-12 items-center justify-center gap-2 rounded-lg bg-[#0DB89B] px-6 text-base font-semibold text-white transition-colors hover:bg-[#0AA98E]"
               >
                 Login Now
