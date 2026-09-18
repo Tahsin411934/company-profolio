@@ -26,6 +26,7 @@ export type SaasProduct = {
   workflowItems: string[];
   productUrl: string;
   demoUrl: string | null;
+  registerUrl?: string;
   metaTitle: string;
   metaDescription: string;
 };
@@ -90,6 +91,7 @@ export const saasProducts: Record<string, SaasProduct> = {
     workflowItems: ["Payment Gateway", "Analytics", "Marketing", "Courier / Delivery", "Email / Notification"],
     productUrl: "/products/ecommerce",
     demoUrl: null,
+    registerUrl: "/store-register",
     metaTitle: "E-commerce Solution | AFT SOFT AND LIMITED",
     metaDescription: "Launch and manage your online business with AFT SOFT AND LIMITED's all-in-one e-commerce platform.",
   },

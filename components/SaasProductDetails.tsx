@@ -15,6 +15,7 @@ import {
 import Image from "next/image";
 import { Button } from "./ui/button";
 import { type SaasProduct } from "../lib/saas-products";
+
 import { cn } from "../lib/utils";
 
 import { CheckPrinterPreview } from "./CheckPrinterPreview";
@@ -72,7 +73,7 @@ function ProductButtons({
 }) {
   return (
     <div className="flex flex-col gap-3 min-[520px]:flex-row">
-      <Button className="w-full px-6 min-[520px]:w-auto" href="#contact">
+      <Button className="w-full px-6 min-[520px]:w-auto" href={product.registerUrl ?? "#contact"}>
         Get Started <ArrowRight className="h-4 w-4" aria-hidden="true" />
       </Button>
       {product.demoUrl ? (
