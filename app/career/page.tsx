@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { ArrowRight, Code2, Palette, MessageSquare, Mail } from "lucide-react";
-import { Navbar } from "../../components/Navbar";
 import { Footer } from "../../components/Footer";
 import { FloatingWhatsApp } from "../../components/FloatingWhatsApp";
 import { Button } from "../../components/ui/button";
@@ -37,7 +36,6 @@ const areas = [
 export default function CareerPage() {
   return (
     <>
-      <Navbar />
       <main>
         <section className="border-b border-blue-100 bg-blue-50 pb-16 pt-32 sm:pb-20 sm:pt-36">
           <div className="site-container">

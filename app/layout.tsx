@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Manrope } from "next/font/google";
+import { Navbar } from "../components/Navbar";
 import "./globals.css";
 
 const manrope = Manrope({
@@ -80,6 +81,7 @@ export default function RootLayout({
       <body
         className={`${manrope.className} overflow-x-hidden bg-white text-slate-900 antialiased`}
       >
+        <Navbar />
         {children}
       </body>
     </html>
