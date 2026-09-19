@@ -104,7 +104,7 @@ export default function StoreRegisterPage() {
       return;
     }
     setSlugStatus("checking");
-    const timer = window.setTimeout(async () => {
+    const timer = setTimeout(async () => {
       try {
         const response = await fetch(`https://admin.onehaatbd.com/api/v1/register/store-slug-availability?slug=${encodeURIComponent(slug)}`, { headers: { Accept: "application/json" } });
         const body = await response.json();
@@ -113,7 +113,7 @@ export default function StoreRegisterPage() {
         setSlugStatus("idle");
       }
     }, 350);
-    return () => window.clearTimeout(timer);
+    return () => clearTimeout(timer);
   }, [storeSlug, previewSlug]);
 
   if (state?.success) {
