@@ -2,6 +2,7 @@
 
 import { ArrowRight, CheckCircle2, Loader2, ShieldCheck, Store } from "lucide-react";
 import { useFormState, useFormStatus } from "react-dom";
+import { useState } from "react";
 import Link from "next/link";
 import { registerStoreOwner } from "./actions";
 
@@ -86,6 +87,14 @@ function SuccessView({ data, message }: { data: any; message: string }) {
 
 export default function StoreRegisterPage() {
   const [state, formAction] = useFormState(registerStoreOwner, null);
+  const [storeName, setStoreName] = useState("");
+  const [storeSlug, setStoreSlug] = useState("");
+
+  const previewSlug = storeSlug || storeName
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "") || "your-store";
 
   if (state?.success) {
     return <SuccessView data={state.data} message={state.message} />;
@@ -249,6 +258,7 @@ export default function StoreRegisterPage() {
                   </label>
                   <input
                     id="store_name" name="store_name" type="text" required
+                    value={storeName} onChange={(event) => setStoreName(event.target.value)}
                     className="w-full rounded-lg border border-slate-200 px-4 py-2.5 text-sm outline-none transition-colors focus:border-[#0DB89B] focus:ring-2 focus:ring-[#0DB89B]/30"
                     placeholder="Rahim Electronics"
                   />
@@ -260,13 +270,14 @@ export default function StoreRegisterPage() {
                   <label htmlFor="store_slug" className="block text-sm font-semibold text-slate-700 mb-1">Store Slug</label>
                   <input
                     id="store_slug" name="store_slug" type="text"
+                    value={storeSlug} onChange={(event) => setStoreSlug(event.target.value)}
                     className="w-full rounded-lg border border-slate-200 px-4 py-2.5 text-sm outline-none transition-colors focus:border-[#0DB89B] focus:ring-2 focus:ring-[#0DB89B]/30"
                     placeholder="rahim-electronics (optional)"
                   />
                   <p className="mt-1 text-xs text-slate-400">
                     Your store URL:{" "}
                     <code className="text-[#0DB89B]">
-                      {state?.data?.store?.slug || "your-slug"}.aftsoftandlimited.com
+                      {state?.data?.store?.slug || previewSlug}.aftsoftandlimited.com
                     </code>
                   </p>
                   {state?.errors?.store_slug && (
