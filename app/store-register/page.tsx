@@ -2,7 +2,7 @@
 
 import { ArrowRight, CheckCircle2, Loader2, ShieldCheck, Store } from "lucide-react";
 import { useFormState, useFormStatus } from "react-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { registerStoreOwner } from "./actions";
 
@@ -89,12 +89,32 @@ export default function StoreRegisterPage() {
   const [state, formAction] = useFormState(registerStoreOwner, null);
   const [storeName, setStoreName] = useState("");
   const [storeSlug, setStoreSlug] = useState("");
+  const [slugStatus, setSlugStatus] = useState<"idle" | "checking" | "available" | "taken" | "invalid">("idle");
 
   const previewSlug = storeSlug || storeName
     .toLowerCase()
     .trim()
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/^-+|-+$/g, "") || "your-store";
+
+  useEffect(() => {
+    const slug = storeSlug || previewSlug;
+    if (!slug || slug === "your-store") {
+      setSlugStatus("idle");
+      return;
+    }
+    setSlugStatus("checking");
+    const timer = window.setTimeout(async () => {
+      try {
+        const response = await fetch(`https://admin.onehaatbd.com/api/v1/register/store-slug-availability?slug=${encodeURIComponent(slug)}`, { headers: { Accept: "application/json" } });
+        const body = await response.json();
+        setSlugStatus(body?.data?.available ? "available" : body?.data?.reason === "invalid" ? "invalid" : "taken");
+      } catch {
+        setSlugStatus("idle");
+      }
+    }, 350);
+    return () => window.clearTimeout(timer);
+  }, [storeSlug, previewSlug]);
 
   if (state?.success) {
     return <SuccessView data={state.data} message={state.message} />;
@@ -280,6 +300,11 @@ export default function StoreRegisterPage() {
                       {state?.data?.store?.slug || previewSlug}.aftsoftandlimited.com
                     </code>
                   </p>
+                  {slugStatus !== "idle" && (
+                    <p className={`mt-1 text-xs ${slugStatus === "available" ? "text-emerald-600" : slugStatus === "taken" ? "text-red-500" : "text-slate-400"}`}>
+                      {slugStatus === "checking" ? "Checking availability..." : slugStatus === "available" ? "This subdomain is available." : slugStatus === "taken" ? "This subdomain is already taken." : "Enter a valid subdomain name."}
+                    </p>
+                  )}
                   {state?.errors?.store_slug && (
                     <p className="mt-1 text-xs text-red-500">{state.errors.store_slug[0]}</p>
                   )}
