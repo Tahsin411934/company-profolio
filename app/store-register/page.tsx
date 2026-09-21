@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowRight, CheckCircle2, CircleCheck, Loader2, ShieldCheck, Store } from "lucide-react";
+import { ArrowRight, CheckCircle2, CircleCheck, Loader2, ShieldCheck, Store, Check } from "lucide-react";
 import { useFormState, useFormStatus } from "react-dom";
 import { useEffect, useState } from "react";
 import Link from "next/link";
@@ -33,6 +33,22 @@ function SuccessView({ data, message }: { data: any; message: string }) {
   const store = data?.store || {};
   const user = data?.user || {};
   const ownerName = [user.first_name, user.last_name].filter(Boolean).join(" ") || "Store owner";
+  const verificationPending = Boolean(data?.email_verification_required);
+  const [resendState, setResendState] = useState<"idle" | "sending" | "sent">("idle");
+
+  const resendVerification = async () => {
+    if (!user.email || resendState === "sending") return;
+    setResendState("sending");
+    try {
+      await fetch("https://admin.onehaatbd.com/api/v1/email/verification-notification", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify({ email: user.email }),
+      });
+    } finally {
+      setResendState("sent");
+    }
+  };
 
   return (
     <main className="min-h-screen bg-white">
@@ -62,11 +78,19 @@ function SuccessView({ data, message }: { data: any; message: string }) {
           <div className="rounded-[22px] border border-[#0DB89B]/20 bg-[#EDFFFA] p-8 sm:p-10 text-center">
             <CheckCircle2 className="mx-auto h-14 w-14 text-[#0DB89B]" />
             <h2 className="mt-6 text-[28px] font-extrabold tracking-[-0.8px] text-[#10245A]">
-              Your Store Is Ready
+              {verificationPending ? "Check your email to continue" : "Your Store Is Ready"}
             </h2>
             <p className="mt-3 text-base leading-[1.7] text-[#687991]">
               {message || "Your free store has been created successfully."}
             </p>
+            {verificationPending && (
+              <div className="mt-5 rounded-xl border border-blue-200 bg-blue-50 p-4 text-left text-sm text-blue-800">
+                We sent a verification link to <strong>{user.email || "your registered email address"}</strong>. Verify your email before logging in to the admin dashboard.
+                <button type="button" onClick={resendVerification} disabled={resendState !== "idle"} className="mt-3 block font-semibold text-blue-700 underline disabled:opacity-60">
+                  {resendState === "sent" ? "Verification email requested" : resendState === "sending" ? "Sending..." : "Resend verification email"}
+                </button>
+              </div>
+            )}
             <div className="mt-6 grid gap-3 text-left sm:grid-cols-2">
               <div className="rounded-xl border border-slate-200 bg-white p-4">
                 <p className="text-xs font-bold uppercase tracking-wider text-slate-400">Store</p>
@@ -94,12 +118,12 @@ function SuccessView({ data, message }: { data: any; message: string }) {
               </div>
             </div>
             <div className="mt-6 flex flex-col sm:flex-row gap-3 justify-center">
-              <a
+              {!verificationPending && <a
                 href="https://onehaatbd.com/login"
                 className="inline-flex h-12 items-center justify-center gap-2 rounded-lg bg-[#0DB89B] px-6 text-base font-semibold text-white transition-colors hover:bg-[#0AA98E]"
               >
                 Login Now
-              </a>
+              </a>}
               <button
                 onClick={() => window.location.reload()}
                 className="inline-flex h-12 items-center justify-center gap-2 rounded-lg border border-slate-200 bg-white px-6 text-base font-semibold text-slate-700 transition-colors hover:bg-slate-50"
@@ -124,8 +148,21 @@ export default function StoreRegisterPage() {
   const [phone, setPhone] = useState("");
   const [currency, setCurrency] = useState("BDT");
   const [timezone, setTimezone] = useState("Asia/Dhaka");
+  const [plans, setPlans] = useState<any[]>([]);
+  const [plansLoading, setPlansLoading] = useState(true);
+  const [selectedPlan, setSelectedPlan] = useState("free-trial");
   const [slugManuallyEdited, setSlugManuallyEdited] = useState(false);
   const [slugStatus, setSlugStatus] = useState<"idle" | "checking" | "available" | "taken" | "invalid" | "reserved">("idle");
+
+  useEffect(() => {
+    let mounted = true;
+    fetch("https://admin.onehaatbd.com/api/v1/plans", { headers: { Accept: "application/json" } })
+      .then((response) => response.json())
+      .then((body) => { if (mounted) { setPlans(body?.data || []); if (body?.data?.length && !body.data.some((plan: any) => plan.slug === selectedPlan)) setSelectedPlan(body.data[0].slug); } })
+      .catch(() => { if (mounted) setPlans([]); })
+      .finally(() => { if (mounted) setPlansLoading(false); });
+    return () => { mounted = false; };
+  }, []);
 
   const previewSlug = storeSlug || storeName
     .toLowerCase()
@@ -232,6 +269,7 @@ export default function StoreRegisterPage() {
           </div>
 
           <form action={formAction} className="rounded-[22px] border border-slate-200 bg-white p-6 sm:p-8 lg:p-10 shadow-sm">
+            <input type="hidden" name="plan_slug" value={selectedPlan} />
             {state?.message && Object.keys(errors).length > 0 && (
               <div role="alert" className="mb-8 rounded-xl border border-red-200 bg-red-50 p-4 text-left">
                 <p className="text-sm font-bold text-red-700">Please review the highlighted fields.</p>
@@ -431,6 +469,15 @@ export default function StoreRegisterPage() {
                   {fieldError("timezone") && <p className="mt-1 text-xs font-medium text-red-600">{fieldError("timezone")}</p>}
                 </div>
               </div>
+            </div>
+
+            <div className="mb-8">
+              <div className="flex items-end justify-between gap-4">
+                <div><h3 className="text-lg font-bold text-[#10245A]">Choose your plan</h3><p className="mt-1 text-sm text-slate-500">Start with the plan that fits your business. You can upgrade later.</p></div>
+                <span className="hidden rounded-full bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-700 sm:inline-flex">No payment required today</span>
+              </div>
+              {plansLoading ? <div className="mt-4 grid gap-3 sm:grid-cols-3">{[1,2,3].map((item) => <div key={item} className="h-44 animate-pulse rounded-xl bg-slate-100" />)}</div> : plans.length ? <div className="mt-4 grid gap-3 md:grid-cols-3">{plans.map((plan: any) => { const selected = selectedPlan === plan.slug; return <button type="button" key={plan.id} onClick={() => setSelectedPlan(plan.slug)} className={`relative text-left rounded-xl border-2 p-4 transition-all ${selected ? "border-[#0DB89B] bg-[#F1FFFB] shadow-md" : "border-slate-200 bg-white hover:border-[#0DB89B]/50"}`} aria-pressed={selected}><span className="absolute right-3 top-3 flex h-5 w-5 items-center justify-center rounded-full border ${selected ? "border-[#0DB89B] bg-[#0DB89B] text-white" : "border-slate-300 text-transparent"}`}><Check className="h-3 w-3" /></span><p className="pr-6 text-base font-bold text-[#10245A]">{plan.name}</p><p className="mt-1 text-xl font-extrabold text-[#0A987F]">{plan.is_free ? "Free" : `${Number(plan.price).toLocaleString()} ${plan.currency}`}<span className="text-xs font-medium text-slate-500">{plan.duration_days ? ` / ${plan.duration_days} days` : ""}</span></p><p className="mt-2 text-xs text-slate-500">{plan.product_limit ? `Up to ${plan.product_limit} products` : "Unlimited products"}</p><ul className="mt-3 space-y-1 text-xs text-slate-600">{(plan.features || []).slice(0, 3).map((feature: any) => <li key={feature.id}>✓ {feature.name}</li>)}</ul></button>; })}</div> : <div className="mt-4 rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-800">Plans are temporarily unavailable. Please try again in a moment.</div>}
+              {fieldError("plan_slug") && <p className="mt-2 text-xs font-medium text-red-600">{fieldError("plan_slug")}</p>}
             </div>
 
             <SubmitButton />
