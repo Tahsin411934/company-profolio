@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowRight, CheckCircle2, Loader2, ShieldCheck, Store } from "lucide-react";
+import { ArrowRight, CheckCircle2, CircleCheck, Loader2, ShieldCheck, Store } from "lucide-react";
 import { useFormState, useFormStatus } from "react-dom";
 import { useEffect, useState } from "react";
 import Link from "next/link";
@@ -30,8 +30,22 @@ function SubmitButton() {
 }
 
 function SuccessView({ data, message }: { data: any; message: string }) {
+  const store = data?.store || {};
+  const user = data?.user || {};
+  const ownerName = [user.first_name, user.last_name].filter(Boolean).join(" ") || "Store owner";
+
   return (
     <main className="min-h-screen bg-white">
+      <header className="border-b border-slate-100 bg-white/90 backdrop-blur">
+        <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-[18px] sm:px-6">
+          <Link href="/" aria-label="AFT SOFT home">
+            <img src="/aft-navbar-logo-clean.png" alt="AFT SOFT" className="h-8 w-auto" />
+          </Link>
+          <Link href="/login" className="text-sm font-semibold text-slate-600 hover:text-[#0DB89B]">
+            Already have an account? <span className="text-[#0DB89B]">Log in</span>
+          </Link>
+        </div>
+      </header>
       <section className="relative overflow-hidden bg-[linear-gradient(135deg,#F7FBFF_0%,#FFFFFF_50%,#F3FFFB_100%)] pb-16 pt-28 sm:pb-20 sm:pt-32 lg:pb-24 lg:pt-36">
         <div className="relative z-10 mx-auto max-w-7xl px-[18px] sm:px-6">
           <span className="inline-flex h-8 items-center rounded-full px-4 text-sm font-bold uppercase tracking-[1.8px] bg-[#DDF9F1] text-[#0A987F]">
@@ -51,18 +65,33 @@ function SuccessView({ data, message }: { data: any; message: string }) {
               Your Store Is Ready
             </h2>
             <p className="mt-3 text-base leading-[1.7] text-[#687991]">
-              {message || "Your store has been created. Please login to continue."}
+              {message || "Your free store has been created successfully."}
             </p>
-            <div className="mt-6 rounded-xl bg-white border border-[#0DB89B]/20 p-4 text-left">
-              <p className="text-xs font-bold uppercase tracking-wider text-[#0A987F] mb-2">Store URL</p>
-              <a
-                href={data?.store_url || "#"}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-base font-semibold text-[#0DB89B] hover:underline break-all"
-              >
-                {data?.store_url || "N/A"}
+            <div className="mt-6 grid gap-3 text-left sm:grid-cols-2">
+              <div className="rounded-xl border border-slate-200 bg-white p-4">
+                <p className="text-xs font-bold uppercase tracking-wider text-slate-400">Store</p>
+                <p className="mt-1 truncate text-base font-bold text-[#10245A]">{store.name || "Your store"}</p>
+                <p className="mt-1 text-xs text-emerald-600">Active · Free plan</p>
+              </div>
+              <div className="rounded-xl border border-slate-200 bg-white p-4">
+                <p className="text-xs font-bold uppercase tracking-wider text-slate-400">Owner account</p>
+                <p className="mt-1 truncate text-base font-bold text-[#10245A]">{ownerName}</p>
+                <p className="mt-1 truncate text-xs text-slate-500">{user.email || "Email used during signup"}</p>
+              </div>
+            </div>
+            <div className="mt-3 rounded-xl border border-[#0DB89B]/20 bg-white p-4 text-left">
+              <p className="text-xs font-bold uppercase tracking-wider text-[#0A987F]">Your free storefront URL</p>
+              <a href={data?.store_url || "#"} target="_blank" rel="noopener noreferrer" className="mt-1 block break-all text-base font-semibold text-[#0DB89B] hover:underline">
+                {data?.store_url || "Not available"}
               </a>
+            </div>
+            <div className="mt-6 rounded-xl border border-slate-200 bg-white p-5 text-left">
+              <p className="text-sm font-bold text-[#10245A]">Next steps</p>
+              <div className="mt-3 grid gap-2 text-sm text-slate-600 sm:grid-cols-3">
+                <span>1. Log in to your dashboard</span>
+                <span>2. Add your first product</span>
+                <span>3. Connect a custom domain later</span>
+              </div>
             </div>
             <div className="mt-6 flex flex-col sm:flex-row gap-3 justify-center">
               <a
@@ -89,7 +118,7 @@ export default function StoreRegisterPage() {
   const [state, formAction] = useFormState(registerStoreOwner, null);
   const [storeName, setStoreName] = useState("");
   const [storeSlug, setStoreSlug] = useState("");
-  const [slugStatus, setSlugStatus] = useState<"idle" | "checking" | "available" | "taken" | "invalid">("idle");
+  const [slugStatus, setSlugStatus] = useState<"idle" | "checking" | "available" | "taken" | "invalid" | "reserved">("idle");
 
   const previewSlug = storeSlug || storeName
     .toLowerCase()
@@ -108,7 +137,7 @@ export default function StoreRegisterPage() {
       try {
         const response = await fetch(`https://admin.onehaatbd.com/api/v1/register/store-slug-availability?slug=${encodeURIComponent(slug)}`, { headers: { Accept: "application/json" } });
         const body = await response.json();
-        setSlugStatus(body?.data?.available ? "available" : body?.data?.reason === "invalid" ? "invalid" : "taken");
+        setSlugStatus(body?.data?.available ? "available" : body?.data?.reason === "invalid" ? "invalid" : body?.data?.reason === "reserved" ? "reserved" : "taken");
       } catch {
         setSlugStatus("idle");
       }
@@ -141,18 +170,18 @@ export default function StoreRegisterPage() {
               Start Your E-commerce Store Today
             </h1>
             <p className="mt-5 max-w-xl text-base leading-[1.7] text-[#687991]">
-              Launch, manage, and grow your online business from one
-              powerful and easy-to-use platform. Register now and get
-              your free subdomain instantly.
+              Launch, manage, and grow your online business from one powerful,
+              easy-to-use platform. Create your store free and get a
+              storefront URL instantly.
             </p>
             <div className="mt-8 flex flex-wrap items-center gap-4">
               <div className="flex items-center gap-2 text-sm font-semibold text-[#0A987F]">
                 <Store className="h-5 w-5" />
-                Free subdomain included
+                Free store URL included
               </div>
               <div className="flex items-center gap-2 text-sm font-semibold text-[#0A987F]">
                 <ShieldCheck className="h-5 w-5" />
-                SSL secured
+                Secure by default
               </div>
             </div>
           </div>
@@ -167,18 +196,24 @@ export default function StoreRegisterPage() {
       <section className="py-16 sm:py-20 lg:py-24">
         <div className="mx-auto max-w-2xl px-[18px] sm:px-6">
           <div className="text-center mb-10">
-            <p className="eyebrow">Get Started</p>
+            <div className="mx-auto inline-flex items-center gap-2 rounded-full bg-[#DDF9F1] px-4 py-2 text-xs font-bold uppercase tracking-[1.5px] text-[#0A987F]"><CircleCheck className="h-4 w-4" /> Free forever to get started</div>
             <h2 className="section-title mt-4">Create Your Store</h2>
             <p className="mx-auto mt-4 max-w-xl text-lg leading-relaxed text-slate-600">
-              Fill in the details below to register your new e-commerce store.
+              Set up your owner account and choose your free storefront address.
             </p>
+          </div>
+
+          <div className="mb-6 grid gap-3 rounded-2xl border border-slate-200 bg-slate-50 p-4 text-sm text-slate-600 sm:grid-cols-3">
+            <div className="flex items-center gap-2"><span className="flex h-7 w-7 items-center justify-center rounded-full bg-[#0DB89B] text-xs font-bold text-white">1</span> Owner account</div>
+            <div className="flex items-center gap-2"><span className="flex h-7 w-7 items-center justify-center rounded-full bg-[#0DB89B] text-xs font-bold text-white">2</span> Store details</div>
+            <div className="flex items-center gap-2"><span className="flex h-7 w-7 items-center justify-center rounded-full bg-[#0DB89B] text-xs font-bold text-white">3</span> Launch instantly</div>
           </div>
 
           <form action={formAction} className="rounded-[22px] border border-slate-200 bg-white p-6 sm:p-8 lg:p-10 shadow-sm">
             <div className="mb-8">
               <h3 className="text-lg font-bold text-[#10245A] flex items-center gap-2">
                 <Store className="h-5 w-5 text-[#0DB89B]" />
-                Owner Information
+                Owner account
               </h3>
               <div className="mt-4 grid gap-4 sm:grid-cols-2">
                 <div>
@@ -211,7 +246,7 @@ export default function StoreRegisterPage() {
             </div>
 
             <div className="mb-8">
-              <h3 className="text-lg font-bold text-[#10245A]">Contact</h3>
+              <h3 className="text-lg font-bold text-[#10245A]">Contact details</h3>
               <div className="mt-4 grid gap-4 sm:grid-cols-2">
                 <div>
                   <label htmlFor="email" className="block text-sm font-semibold text-slate-700 mb-1">
@@ -238,7 +273,7 @@ export default function StoreRegisterPage() {
             </div>
 
             <div className="mb-8">
-              <h3 className="text-lg font-bold text-[#10245A]">Password</h3>
+              <h3 className="text-lg font-bold text-[#10245A]">Secure your account</h3>
               <div className="mt-4 grid gap-4 sm:grid-cols-2">
                 <div>
                   <label htmlFor="password" className="block text-sm font-semibold text-slate-700 mb-1">
@@ -270,7 +305,7 @@ export default function StoreRegisterPage() {
             </div>
 
             <div className="mb-8">
-              <h3 className="text-lg font-bold text-[#10245A]">Store Details</h3>
+              <h3 className="text-lg font-bold text-[#10245A]">Store details</h3>
               <div className="mt-4 grid gap-4 sm:grid-cols-2">
                 <div className="sm:col-span-2">
                   <label htmlFor="store_name" className="block text-sm font-semibold text-slate-700 mb-1">
@@ -287,22 +322,22 @@ export default function StoreRegisterPage() {
                   )}
                 </div>
                 <div>
-                  <label htmlFor="store_slug" className="block text-sm font-semibold text-slate-700 mb-1">Store Slug</label>
+                  <label htmlFor="store_slug" className="block text-sm font-semibold text-slate-700 mb-1">Choose your free store URL</label>
                   <input
                     id="store_slug" name="store_slug" type="text"
                     value={storeSlug} onChange={(event) => setStoreSlug(event.target.value)}
                     className="w-full rounded-lg border border-slate-200 px-4 py-2.5 text-sm outline-none transition-colors focus:border-[#0DB89B] focus:ring-2 focus:ring-[#0DB89B]/30"
-                    placeholder="rahim-electronics (optional)"
+                    placeholder="rahim-electronics"
                   />
                   <p className="mt-1 text-xs text-slate-400">
-                    Your store URL:{" "}
+                    Your free URL:{" "}
                     <code className="text-[#0DB89B]">
                       {state?.data?.store?.slug || previewSlug}.aftsoftandlimited.com
                     </code>
                   </p>
                   {slugStatus !== "idle" && (
-                    <p className={`mt-1 text-xs ${slugStatus === "available" ? "text-emerald-600" : slugStatus === "taken" ? "text-red-500" : "text-slate-400"}`}>
-                      {slugStatus === "checking" ? "Checking availability..." : slugStatus === "available" ? "This subdomain is available." : slugStatus === "taken" ? "This subdomain is already taken." : "Enter a valid subdomain name."}
+                    <p className={`mt-1 text-xs ${slugStatus === "available" ? "text-emerald-600" : slugStatus === "taken" || slugStatus === "reserved" ? "text-red-500" : "text-slate-400"}`}>
+                      {slugStatus === "checking" ? "Checking availability..." : slugStatus === "available" ? "This store URL is available." : slugStatus === "taken" ? "This store URL is already taken." : slugStatus === "reserved" ? "This URL is reserved. Choose another." : "Enter a valid store URL."}
                     </p>
                   )}
                   {state?.errors?.store_slug && (
