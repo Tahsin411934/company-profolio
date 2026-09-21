@@ -118,6 +118,12 @@ export default function StoreRegisterPage() {
   const [state, formAction] = useFormState(registerStoreOwner, null);
   const [storeName, setStoreName] = useState("");
   const [storeSlug, setStoreSlug] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [currency, setCurrency] = useState("BDT");
+  const [timezone, setTimezone] = useState("Asia/Dhaka");
   const [slugManuallyEdited, setSlugManuallyEdited] = useState(false);
   const [slugStatus, setSlugStatus] = useState<"idle" | "checking" | "available" | "taken" | "invalid" | "reserved">("idle");
 
@@ -248,6 +254,7 @@ export default function StoreRegisterPage() {
                   </label>
                   <input
                     id="first_name" name="first_name" type="text" required
+                    value={firstName} onChange={(event) => setFirstName(event.target.value)}
                     className={inputClass("first_name", "w-full rounded-lg border border-slate-200 px-4 py-2.5 text-sm outline-none transition-colors focus:border-[#0DB89B] focus:ring-2 focus:ring-[#0DB89B]/30")}
                     aria-invalid={fieldError("first_name") ? "true" : "false"}
                     placeholder="Rahim"
@@ -262,6 +269,7 @@ export default function StoreRegisterPage() {
                   </label>
                   <input
                     id="last_name" name="last_name" type="text" required
+                    value={lastName} onChange={(event) => setLastName(event.target.value)}
                     className={inputClass("last_name", "w-full rounded-lg border border-slate-200 px-4 py-2.5 text-sm outline-none transition-colors focus:border-[#0DB89B] focus:ring-2 focus:ring-[#0DB89B]/30")}
                     aria-invalid={fieldError("last_name") ? "true" : "false"}
                     placeholder="Uddin"
@@ -282,6 +290,7 @@ export default function StoreRegisterPage() {
                   </label>
                   <input
                     id="email" name="email" type="email" required
+                    value={email} onChange={(event) => setEmail(event.target.value)}
                     className={inputClass("email", "w-full rounded-lg border border-slate-200 px-4 py-2.5 text-sm outline-none transition-colors focus:border-[#0DB89B] focus:ring-2 focus:ring-[#0DB89B]/30")}
                     aria-invalid={fieldError("email") ? "true" : "false"}
                     placeholder="you@example.com"
@@ -294,6 +303,7 @@ export default function StoreRegisterPage() {
                   <label htmlFor="phone" className="block text-sm font-semibold text-slate-700 mb-1">Phone <span className="text-red-500">*</span></label>
                   <input
                     id="phone" name="phone" type="tel" required
+                    value={phone} onChange={(event) => setPhone(event.target.value)}
                     className={inputClass("phone", "w-full rounded-lg border border-slate-200 px-4 py-2.5 text-sm outline-none transition-colors focus:border-[#0DB89B] focus:ring-2 focus:ring-[#0DB89B]/30")}
                     aria-invalid={fieldError("phone") ? "true" : "false"}
                     placeholder="01711223344"
@@ -391,7 +401,7 @@ export default function StoreRegisterPage() {
                 <div>
                   <label htmlFor="currency_code" className="block text-sm font-semibold text-slate-700 mb-1">Currency</label>
                   <select
-                    id="currency_code" name="currency_code" defaultValue="BDT"
+                    id="currency_code" name="currency_code" value={currency} onChange={(event) => setCurrency(event.target.value)}
                     className={inputClass("currency_code", "w-full rounded-lg border border-slate-200 bg-white px-4 py-2.5 text-sm outline-none transition-colors focus:border-[#0DB89B] focus:ring-2 focus:ring-[#0DB89B]/30")}
                     aria-invalid={fieldError("currency_code") ? "true" : "false"}
                   >
@@ -406,7 +416,7 @@ export default function StoreRegisterPage() {
                 <div>
                   <label htmlFor="timezone" className="block text-sm font-semibold text-slate-700 mb-1">Timezone</label>
                   <select
-                    id="timezone" name="timezone" defaultValue="Asia/Dhaka"
+                    id="timezone" name="timezone" value={timezone} onChange={(event) => setTimezone(event.target.value)}
                     className={inputClass("timezone", "w-full rounded-lg border border-slate-200 bg-white px-4 py-2.5 text-sm outline-none transition-colors focus:border-[#0DB89B] focus:ring-2 focus:ring-[#0DB89B]/30")}
                     aria-invalid={fieldError("timezone") ? "true" : "false"}
                   >
