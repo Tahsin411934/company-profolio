@@ -125,6 +125,10 @@ export default function StoreRegisterPage() {
     .trim()
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/^-+|-+$/g, "") || "your-store";
+  const errors = state?.errors || {};
+  const fieldError = (name: string) => errors[name]?.[0];
+  const inputClass = (name: string, base: string) =>
+    `${base} ${fieldError(name) ? "border-red-400 bg-red-50/30 focus:border-red-500 focus:ring-red-500/20" : ""}`;
 
   useEffect(() => {
     const slug = storeSlug || previewSlug;
@@ -144,6 +148,12 @@ export default function StoreRegisterPage() {
     }, 350);
     return () => clearTimeout(timer);
   }, [storeSlug, previewSlug]);
+
+  useEffect(() => {
+    if (Object.keys(errors).length > 0) {
+      document.querySelector<HTMLElement>("[aria-invalid='true']")?.focus();
+    }
+  }, [state]);
 
   if (state?.success) {
     return <SuccessView data={state.data} message={state.message} />;
@@ -210,6 +220,16 @@ export default function StoreRegisterPage() {
           </div>
 
           <form action={formAction} className="rounded-[22px] border border-slate-200 bg-white p-6 sm:p-8 lg:p-10 shadow-sm">
+            {state?.message && Object.keys(errors).length > 0 && (
+              <div role="alert" className="mb-8 rounded-xl border border-red-200 bg-red-50 p-4 text-left">
+                <p className="text-sm font-bold text-red-700">Please review the highlighted fields.</p>
+                <ul className="mt-2 list-disc space-y-1 pl-5 text-xs text-red-600">
+                  {Object.entries(errors).map(([name, messages]) => (
+                    <li key={name}>{(messages as string[])[0]}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
             <div className="mb-8">
               <h3 className="text-lg font-bold text-[#10245A] flex items-center gap-2">
                 <Store className="h-5 w-5 text-[#0DB89B]" />
@@ -222,7 +242,8 @@ export default function StoreRegisterPage() {
                   </label>
                   <input
                     id="first_name" name="first_name" type="text" required
-                    className="w-full rounded-lg border border-slate-200 px-4 py-2.5 text-sm outline-none transition-colors focus:border-[#0DB89B] focus:ring-2 focus:ring-[#0DB89B]/30"
+                    className={inputClass("first_name", "w-full rounded-lg border border-slate-200 px-4 py-2.5 text-sm outline-none transition-colors focus:border-[#0DB89B] focus:ring-2 focus:ring-[#0DB89B]/30")}
+                    aria-invalid={fieldError("first_name") ? "true" : "false"}
                     placeholder="Rahim"
                   />
                   {state?.errors?.first_name && (
@@ -235,7 +256,8 @@ export default function StoreRegisterPage() {
                   </label>
                   <input
                     id="last_name" name="last_name" type="text" required
-                    className="w-full rounded-lg border border-slate-200 px-4 py-2.5 text-sm outline-none transition-colors focus:border-[#0DB89B] focus:ring-2 focus:ring-[#0DB89B]/30"
+                    className={inputClass("last_name", "w-full rounded-lg border border-slate-200 px-4 py-2.5 text-sm outline-none transition-colors focus:border-[#0DB89B] focus:ring-2 focus:ring-[#0DB89B]/30")}
+                    aria-invalid={fieldError("last_name") ? "true" : "false"}
                     placeholder="Uddin"
                   />
                   {state?.errors?.last_name && (
@@ -254,20 +276,23 @@ export default function StoreRegisterPage() {
                   </label>
                   <input
                     id="email" name="email" type="email" required
-                    className="w-full rounded-lg border border-slate-200 px-4 py-2.5 text-sm outline-none transition-colors focus:border-[#0DB89B] focus:ring-2 focus:ring-[#0DB89B]/30"
+                    className={inputClass("email", "w-full rounded-lg border border-slate-200 px-4 py-2.5 text-sm outline-none transition-colors focus:border-[#0DB89B] focus:ring-2 focus:ring-[#0DB89B]/30")}
+                    aria-invalid={fieldError("email") ? "true" : "false"}
                     placeholder="you@example.com"
                   />
                   {state?.errors?.email && (
-                    <p className="mt-1 text-xs text-red-500">{state.errors.email[0]}</p>
+                    <p className="mt-1 text-xs font-medium text-red-600">{fieldError("email")}</p>
                   )}
                 </div>
                 <div>
                   <label htmlFor="phone" className="block text-sm font-semibold text-slate-700 mb-1">Phone</label>
                   <input
                     id="phone" name="phone" type="tel"
-                    className="w-full rounded-lg border border-slate-200 px-4 py-2.5 text-sm outline-none transition-colors focus:border-[#0DB89B] focus:ring-2 focus:ring-[#0DB89B]/30"
+                    className={inputClass("phone", "w-full rounded-lg border border-slate-200 px-4 py-2.5 text-sm outline-none transition-colors focus:border-[#0DB89B] focus:ring-2 focus:ring-[#0DB89B]/30")}
+                    aria-invalid={fieldError("phone") ? "true" : "false"}
                     placeholder="01711223344"
                   />
+                  {fieldError("phone") && <p className="mt-1 text-xs font-medium text-red-600">{fieldError("phone")}</p>}
                 </div>
               </div>
             </div>
@@ -281,7 +306,8 @@ export default function StoreRegisterPage() {
                   </label>
                   <input
                     id="password" name="password" type="password" required
-                    className="w-full rounded-lg border border-slate-200 px-4 py-2.5 text-sm outline-none transition-colors focus:border-[#0DB89B] focus:ring-2 focus:ring-[#0DB89B]/30"
+                    className={inputClass("password", "w-full rounded-lg border border-slate-200 px-4 py-2.5 text-sm outline-none transition-colors focus:border-[#0DB89B] focus:ring-2 focus:ring-[#0DB89B]/30")}
+                    aria-invalid={fieldError("password") ? "true" : "false"}
                     placeholder="Min 8 characters"
                   />
                   {state?.errors?.password && (
@@ -294,7 +320,8 @@ export default function StoreRegisterPage() {
                   </label>
                   <input
                     id="password_confirmation" name="password_confirmation" type="password" required
-                    className="w-full rounded-lg border border-slate-200 px-4 py-2.5 text-sm outline-none transition-colors focus:border-[#0DB89B] focus:ring-2 focus:ring-[#0DB89B]/30"
+                    className={inputClass("password_confirmation", "w-full rounded-lg border border-slate-200 px-4 py-2.5 text-sm outline-none transition-colors focus:border-[#0DB89B] focus:ring-2 focus:ring-[#0DB89B]/30")}
+                    aria-invalid={fieldError("password_confirmation") ? "true" : "false"}
                     placeholder="Repeat password"
                   />
                   {state?.errors?.password_confirmation && (
@@ -314,7 +341,8 @@ export default function StoreRegisterPage() {
                   <input
                     id="store_name" name="store_name" type="text" required
                     value={storeName} onChange={(event) => setStoreName(event.target.value)}
-                    className="w-full rounded-lg border border-slate-200 px-4 py-2.5 text-sm outline-none transition-colors focus:border-[#0DB89B] focus:ring-2 focus:ring-[#0DB89B]/30"
+                    className={inputClass("store_name", "w-full rounded-lg border border-slate-200 px-4 py-2.5 text-sm outline-none transition-colors focus:border-[#0DB89B] focus:ring-2 focus:ring-[#0DB89B]/30")}
+                    aria-invalid={fieldError("store_name") ? "true" : "false"}
                     placeholder="Rahim Electronics"
                   />
                   {state?.errors?.store_name && (
@@ -326,7 +354,8 @@ export default function StoreRegisterPage() {
                   <input
                     id="store_slug" name="store_slug" type="text"
                     value={storeSlug} onChange={(event) => setStoreSlug(event.target.value)}
-                    className="w-full rounded-lg border border-slate-200 px-4 py-2.5 text-sm outline-none transition-colors focus:border-[#0DB89B] focus:ring-2 focus:ring-[#0DB89B]/30"
+                    className={inputClass("store_slug", "w-full rounded-lg border border-slate-200 px-4 py-2.5 text-sm outline-none transition-colors focus:border-[#0DB89B] focus:ring-2 focus:ring-[#0DB89B]/30")}
+                    aria-invalid={fieldError("store_slug") ? "true" : "false"}
                     placeholder="rahim-electronics"
                   />
                   <p className="mt-1 text-xs text-slate-400">
@@ -348,7 +377,8 @@ export default function StoreRegisterPage() {
                   <label htmlFor="currency_code" className="block text-sm font-semibold text-slate-700 mb-1">Currency</label>
                   <select
                     id="currency_code" name="currency_code" defaultValue="BDT"
-                    className="w-full rounded-lg border border-slate-200 bg-white px-4 py-2.5 text-sm outline-none transition-colors focus:border-[#0DB89B] focus:ring-2 focus:ring-[#0DB89B]/30"
+                    className={inputClass("currency_code", "w-full rounded-lg border border-slate-200 bg-white px-4 py-2.5 text-sm outline-none transition-colors focus:border-[#0DB89B] focus:ring-2 focus:ring-[#0DB89B]/30")}
+                    aria-invalid={fieldError("currency_code") ? "true" : "false"}
                   >
                     <option value="BDT">BDT - Bangladeshi Taka</option>
                     <option value="USD">USD - US Dollar</option>
@@ -356,12 +386,14 @@ export default function StoreRegisterPage() {
                     <option value="GBP">GBP - British Pound</option>
                     <option value="INR">INR - Indian Rupee</option>
                   </select>
+                  {fieldError("currency_code") && <p className="mt-1 text-xs font-medium text-red-600">{fieldError("currency_code")}</p>}
                 </div>
                 <div>
                   <label htmlFor="timezone" className="block text-sm font-semibold text-slate-700 mb-1">Timezone</label>
                   <select
                     id="timezone" name="timezone" defaultValue="Asia/Dhaka"
-                    className="w-full rounded-lg border border-slate-200 bg-white px-4 py-2.5 text-sm outline-none transition-colors focus:border-[#0DB89B] focus:ring-2 focus:ring-[#0DB89B]/30"
+                    className={inputClass("timezone", "w-full rounded-lg border border-slate-200 bg-white px-4 py-2.5 text-sm outline-none transition-colors focus:border-[#0DB89B] focus:ring-2 focus:ring-[#0DB89B]/30")}
+                    aria-invalid={fieldError("timezone") ? "true" : "false"}
                   >
                     <option value="Asia/Dhaka">Asia/Dhaka</option>
                     <option value="Asia/Kolkata">Asia/Kolkata</option>
@@ -371,6 +403,7 @@ export default function StoreRegisterPage() {
                     <option value="America/New_York">America/New_York</option>
                     <option value="Europe/London">Europe/London</option>
                   </select>
+                  {fieldError("timezone") && <p className="mt-1 text-xs font-medium text-red-600">{fieldError("timezone")}</p>}
                 </div>
               </div>
             </div>
