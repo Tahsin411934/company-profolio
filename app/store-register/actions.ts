@@ -1,10 +1,14 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
+import { startVerificationSession, verificationSessionKey } from "../../lib/verification-session";
 
 const API_URL = "https://admin.onehaatbd.com/api/v1/register/store-owner";
 
 export async function registerStoreOwner(prevState: any, formData: FormData) {
+  try { verificationSessionKey(); } catch {
+    return { success: false, errors: {}, message: "Registration is temporarily unavailable. Please try again later." };
+  }
   const data: Record<string, string> = {};
   for (const [key, value] of formData.entries()) {
     if (value !== null && value !== undefined) {
@@ -12,6 +16,7 @@ export async function registerStoreOwner(prevState: any, formData: FormData) {
     }
   }
 
+  let registeredEmail = "";
   try {
     const res = await fetch(API_URL, {
       method: "POST",
@@ -33,20 +38,8 @@ export async function registerStoreOwner(prevState: any, formData: FormData) {
     }
 
     const responseData = body.data || body;
-    const storeUrl = responseData.store_url || "";
-    const storeInfo = responseData.store || {};
+    registeredEmail = responseData.user?.email || data.email;
 
-    revalidatePath("/store-register");
-
-    return {
-      success: true,
-      data: {
-        ...responseData,
-        store_url: storeUrl,
-        store: storeInfo,
-      },
-      message: body.message || "Registration successful. Please login.",
-    };
   } catch {
     return {
       success: false,
@@ -54,4 +47,6 @@ export async function registerStoreOwner(prevState: any, formData: FormData) {
       message: "Network error. Please check your connection and try again.",
     };
   }
+  await startVerificationSession(registeredEmail);
+  redirect("/check-email");
 }

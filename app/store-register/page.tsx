@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowRight, CheckCircle2, Loader2, ShieldCheck, Store, Check, Mail, Eye, EyeOff, Globe2, ShoppingBag, Package, ArrowUpRight } from "lucide-react";
+import { ArrowRight, CheckCircle2, Loader2, ShieldCheck, Store, Check, Eye, EyeOff, Globe2, ShoppingBag, Package, ArrowUpRight } from "lucide-react";
 import { useFormStatus } from "react-dom";
 import { useActionState, useEffect, useRef, useState } from "react";
 import Link from "next/link";
@@ -27,135 +27,6 @@ function SubmitButton() {
         </>
       )}
     </button>
-  );
-}
-
-function SuccessView({ data, message }: { data: any; message: string }) {
-  const store = data?.store || {};
-  const user = data?.user || {};
-  const ownerName = [user.first_name, user.last_name].filter(Boolean).join(" ") || "Store owner";
-  const verificationPending = Boolean(data?.email_verification_required);
-  const [resendState, setResendState] = useState<"idle" | "sending" | "sent" | "error">("idle");
-
-  const resendVerification = async () => {
-    if (!user.email || resendState === "sending") return;
-    setResendState("sending");
-    try {
-      const response = await fetch("https://admin.onehaatbd.com/api/v1/email/verification-notification", {
-        method: "POST",
-        headers: { "Content-Type": "application/json", Accept: "application/json" },
-        body: JSON.stringify({ email: user.email }),
-      });
-      if (!response.ok) throw new Error("Resend failed");
-      setResendState("sent");
-    } catch {
-      setResendState("error");
-    }
-  };
-
-  if (verificationPending) {
-    return (
-      <main className="flex min-h-screen items-center justify-center bg-[#F4F6F5] px-4 pb-10 pt-28">
-        <section aria-labelledby="verify-email-heading" className="w-full max-w-lg rounded-3xl border border-[#DFE6E2] bg-white p-6 text-center shadow-xl shadow-slate-200/40 sm:p-10">
-          <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-[#EDF4EA] text-[#234E3B]"><Mail className="h-8 w-8" strokeWidth={1.5} /></div>
-          <h1 id="verify-email-heading" className="mt-6 text-2xl font-extrabold tracking-tight text-[#183B2E] sm:text-3xl">Check your email to continue</h1>
-          <p className="mt-3 text-sm leading-6 text-slate-500">Store created successfully. Please check your email to verify your account.</p>
-          <p className="mt-5 text-sm leading-7 text-slate-600">We sent a verification link to <strong className="break-all text-[#234E3B]">{user.email || "your registered email address"}</strong>. Verify your email before logging in to the admin dashboard.</p>
-          <button type="button" onClick={resendVerification} disabled={resendState === "sending" || resendState === "sent"} className="mt-6 inline-flex min-h-11 items-center justify-center gap-2 rounded-lg border border-[#D8E3DA] px-5 text-sm font-semibold text-[#234E3B] transition hover:bg-[#F3F7F1] disabled:opacity-60">
-            {resendState === "sending" && <Loader2 className="h-4 w-4 animate-spin" />}
-            {resendState === "sent" ? "Verification email requested" : resendState === "sending" ? "Sending..." : "Resend verification email"}
-          </button>
-          <p role="status" aria-live="polite" className="mt-3 text-xs text-slate-500">{resendState === "sent" ? "Please check your inbox and spam folder." : resendState === "error" ? "Could not resend the email. Please try again." : ""}</p>
-        </section>
-      </main>
-    );
-  }
-
-  return (
-    <main className="min-h-screen bg-white">
-      <header className="border-b border-slate-100 bg-white/90 backdrop-blur">
-        <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-[18px] sm:px-6">
-          <Link href="/" aria-label="AFT SOFT home">
-            <img src="/aft-navbar-logo-clean.png" alt="AFT SOFT" className="h-8 w-auto" />
-          </Link>
-          <Link href="/login" className="text-sm font-semibold text-slate-600 hover:text-[#0DB89B]">
-            Already have an account? <span className="text-[#0DB89B]">Log in</span>
-          </Link>
-        </div>
-      </header>
-      <section className="relative overflow-hidden bg-[linear-gradient(135deg,#F7FBFF_0%,#FFFFFF_50%,#F3FFFB_100%)] pb-16 pt-28 sm:pb-20 sm:pt-32 lg:pb-24 lg:pt-36">
-        <div className="relative z-10 mx-auto max-w-7xl px-[18px] sm:px-6">
-          <span className="inline-flex h-8 items-center rounded-full px-4 text-sm font-bold uppercase tracking-[1.8px] bg-[#DDF9F1] text-[#0A987F]">
-            E-COMMERCE
-          </span>
-          <h1 className="mt-6 max-w-2xl text-[34px] font-extrabold leading-[1.08] tracking-[-1px] text-[#10245A] sm:text-[44px] lg:text-[54px]">
-            Registration Complete!
-          </h1>
-        </div>
-      </section>
-
-      <section className="py-16 sm:py-20 lg:py-24">
-        <div className="mx-auto max-w-2xl px-[18px] sm:px-6">
-          <div className="rounded-[22px] border border-[#0DB89B]/20 bg-[#EDFFFA] p-8 sm:p-10 text-center">
-            <CheckCircle2 className="mx-auto h-14 w-14 text-[#0DB89B]" />
-            <h2 className="mt-6 text-[28px] font-extrabold tracking-[-0.8px] text-[#10245A]">
-              {verificationPending ? "Check your email to continue" : "Your Store Is Ready"}
-            </h2>
-            <p className="mt-3 text-base leading-[1.7] text-[#687991]">
-              {message || "Your free store has been created successfully."}
-            </p>
-            {verificationPending && (
-              <div className="mt-5 rounded-xl border border-blue-200 bg-blue-50 p-4 text-left text-sm text-blue-800">
-                We sent a verification link to <strong>{user.email || "your registered email address"}</strong>. Verify your email before logging in to the admin dashboard.
-                <button type="button" onClick={resendVerification} disabled={resendState !== "idle"} className="mt-3 block font-semibold text-blue-700 underline disabled:opacity-60">
-                  {resendState === "sent" ? "Verification email requested" : resendState === "sending" ? "Sending..." : "Resend verification email"}
-                </button>
-              </div>
-            )}
-            <div className="mt-6 grid gap-3 text-left sm:grid-cols-2">
-              <div className="rounded-xl border border-slate-200 bg-white p-4">
-                <p className="text-xs font-bold uppercase tracking-wider text-slate-400">Store</p>
-                <p className="mt-1 truncate text-base font-bold text-[#10245A]">{store.name || "Your store"}</p>
-                <p className="mt-1 text-xs text-emerald-600">Active · Free plan</p>
-              </div>
-              <div className="rounded-xl border border-slate-200 bg-white p-4">
-                <p className="text-xs font-bold uppercase tracking-wider text-slate-400">Owner account</p>
-                <p className="mt-1 truncate text-base font-bold text-[#10245A]">{ownerName}</p>
-                <p className="mt-1 truncate text-xs text-slate-500">{user.email || "Email used during signup"}</p>
-              </div>
-            </div>
-            <div className="mt-3 rounded-xl border border-[#0DB89B]/20 bg-white p-4 text-left">
-              <p className="text-xs font-bold uppercase tracking-wider text-[#0A987F]">Your free storefront URL</p>
-              <a href={data?.store_url || "#"} target="_blank" rel="noopener noreferrer" className="mt-1 block break-all text-base font-semibold text-[#0DB89B] hover:underline">
-                {data?.store_url || "Not available"}
-              </a>
-            </div>
-            <div className="mt-6 rounded-xl border border-slate-200 bg-white p-5 text-left">
-              <p className="text-sm font-bold text-[#10245A]">Next steps</p>
-              <div className="mt-3 grid gap-2 text-sm text-slate-600 sm:grid-cols-3">
-                <span>1. Log in to your dashboard</span>
-                <span>2. Add your first product</span>
-                <span>3. Connect a custom domain later</span>
-              </div>
-            </div>
-            <div className="mt-6 flex flex-col sm:flex-row gap-3 justify-center">
-              {!verificationPending && <a
-                href="https://onehaatbd.com/login"
-                className="inline-flex h-12 items-center justify-center gap-2 rounded-lg bg-[#0DB89B] px-6 text-base font-semibold text-white transition-colors hover:bg-[#0AA98E]"
-              >
-                Login Now
-              </a>}
-              <button
-                onClick={() => window.location.reload()}
-                className="inline-flex h-12 items-center justify-center gap-2 rounded-lg border border-slate-200 bg-white px-6 text-base font-semibold text-slate-700 transition-colors hover:bg-slate-50"
-              >
-                Register Another Store
-              </button>
-            </div>
-          </div>
-        </div>
-      </section>
-    </main>
   );
 }
 
@@ -247,9 +118,6 @@ export default function StoreRegisterPage() {
     return true;
   };
 
-  if (state?.success) {
-    return <SuccessView data={state.data} message={state.message} />;
-  }
 
   return (
     <main className={styles.page}>
@@ -437,7 +305,7 @@ export default function StoreRegisterPage() {
                   <p className="mt-1 text-xs text-slate-400">
                     Your free URL:{" "}
                     <code className="text-[#0DB89B]">
-                      {state?.data?.store?.slug || previewSlug}.aftsoftandlimited.com
+                      {previewSlug}.aftsoftandlimited.com
                     </code>
                   </p>
                   {slugStatus !== "idle" && (
