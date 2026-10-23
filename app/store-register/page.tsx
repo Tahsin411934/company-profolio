@@ -34,6 +34,7 @@ export default function StoreRegisterPage() {
   const [state, formAction] = useActionState(registerStoreOwner, null);
   const [step, setStep] = useState(1);
   const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmation, setShowConfirmation] = useState(false);
   const formRef = useRef<HTMLFormElement>(null);
   const [storeName, setStoreName] = useState("");
   const [storeSlug, setStoreSlug] = useState("");
@@ -231,18 +232,23 @@ export default function StoreRegisterPage() {
             </div>
 
             <div className="mb-4">
-              <div className={styles.passwordHeading}><span>Account security</span><button type="button" onClick={() => setShowPassword(!showPassword)} aria-pressed={showPassword}>{showPassword ? <EyeOff size={14} /> : <Eye size={14} />}{showPassword ? "Hide passwords" : "Show passwords"}</button></div>
+              <div className={styles.passwordHeading}><span>Account security</span></div>
               <div className="mt-3 grid gap-3 sm:grid-cols-2">
                 <div>
                   <label htmlFor="password" className="block text-sm font-semibold text-slate-700 mb-1">
                     Password <span className="text-red-500">*</span>
                   </label>
+                  <div className={styles.passwordField}>
                   <input
                     id="password" name="password" type={showPassword ? "text" : "password"} required minLength={8} autoComplete="new-password"
-                    className={inputClass("password", "w-full rounded-lg border border-slate-200 px-4 py-2.5 text-sm outline-none transition-colors focus:border-[#0DB89B] focus:ring-2 focus:ring-[#0DB89B]/30")}
+                    className={inputClass("password", "w-full rounded-lg border border-slate-200 pl-4 pr-12 py-2.5 text-sm outline-none transition-colors focus:border-[#0DB89B] focus:ring-2 focus:ring-[#0DB89B]/30")}
                     aria-invalid={fieldError("password") ? "true" : "false"}
                     placeholder="Min 8 characters"
                   />
+                    <button type="button" className={styles.passwordToggle} onClick={() => setShowPassword(visible => !visible)} aria-label={showPassword ? "Hide password" : "Show password"} aria-controls="password" aria-pressed={showPassword}>
+                      {showPassword ? <EyeOff size={17} aria-hidden="true" /> : <Eye size={17} aria-hidden="true" />}
+                    </button>
+                  </div>
                   {state?.errors?.password && (
                     <p className="mt-1 text-xs text-red-500">{state.errors.password[0]}</p>
                   )}
@@ -251,12 +257,17 @@ export default function StoreRegisterPage() {
                   <label htmlFor="password_confirmation" className="block text-sm font-semibold text-slate-700 mb-1">
                     Confirm Password <span className="text-red-500">*</span>
                   </label>
+                  <div className={styles.passwordField}>
                   <input
-                    id="password_confirmation" name="password_confirmation" type={showPassword ? "text" : "password"} required minLength={8} autoComplete="new-password"
-                    className={inputClass("password_confirmation", "w-full rounded-lg border border-slate-200 px-4 py-2.5 text-sm outline-none transition-colors focus:border-[#0DB89B] focus:ring-2 focus:ring-[#0DB89B]/30")}
+                    id="password_confirmation" name="password_confirmation" type={showConfirmation ? "text" : "password"} required minLength={8} autoComplete="new-password"
+                    className={inputClass("password_confirmation", "w-full rounded-lg border border-slate-200 pl-4 pr-12 py-2.5 text-sm outline-none transition-colors focus:border-[#0DB89B] focus:ring-2 focus:ring-[#0DB89B]/30")}
                     aria-invalid={fieldError("password_confirmation") ? "true" : "false"}
                     placeholder="Repeat password"
                   />
+                    <button type="button" className={styles.passwordToggle} onClick={() => setShowConfirmation(visible => !visible)} aria-label={showConfirmation ? "Hide confirm password" : "Show confirm password"} aria-controls="password_confirmation" aria-pressed={showConfirmation}>
+                      {showConfirmation ? <EyeOff size={17} aria-hidden="true" /> : <Eye size={17} aria-hidden="true" />}
+                    </button>
+                  </div>
                   {state?.errors?.password_confirmation && (
                     <p className="mt-1 text-xs text-red-500">{state.errors.password_confirmation[0]}</p>
                   )}

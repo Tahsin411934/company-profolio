@@ -65,3 +65,8 @@
 @media(max-width:900px) { .page { padding:100px 16px 24px; } .shell { max-width:540px; grid-template-columns:1fr; border-radius:18px; } .brand { display:none; } .formPanel { padding:25px 28px; } .topline { justify-content:space-between; gap:10px; } .mobileBrand { display:inline-flex !important; font-size:10px; margin-left:0 !important; } }
 @media(max-width:400px) { .page { padding-right:10px; padding-left:10px; } .formPanel { padding:23px 19px; } .topline { font-size:9px; } .title { font-size:26px; } }
 @media(prefers-reduced-motion:reduce) { .form input,.form select,.primary { transition:none; } }
+
+.passwordField { position:relative; }
+.passwordToggle { position:absolute; right:2px; top:2px; bottom:2px; width:40px; display:flex; align-items:center; justify-content:center; border-radius:7px; color:#718477; transition:color .2s,background .2s; }
+.passwordToggle:hover { color:#234e3b; background:#edf4ea; }
+.passwordToggle:focus-visible { outline:2px solid #53876a; outline-offset:1px; }
