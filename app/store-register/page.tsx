@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowRight, CheckCircle2, Loader2, ShieldCheck, Store, Check, Eye, EyeOff, Globe2, ShoppingBag, Package, ArrowUpRight } from "lucide-react";
+import { ArrowRight, CheckCircle2, Loader2, ShieldCheck, Store, Check, Mail, Eye, EyeOff, Globe2, ShoppingBag, Package, ArrowUpRight } from "lucide-react";
 import { useFormStatus } from "react-dom";
 import { useActionState, useEffect, useRef, useState } from "react";
 import Link from "next/link";
@@ -35,21 +35,41 @@ function SuccessView({ data, message }: { data: any; message: string }) {
   const user = data?.user || {};
   const ownerName = [user.first_name, user.last_name].filter(Boolean).join(" ") || "Store owner";
   const verificationPending = Boolean(data?.email_verification_required);
-  const [resendState, setResendState] = useState<"idle" | "sending" | "sent">("idle");
+  const [resendState, setResendState] = useState<"idle" | "sending" | "sent" | "error">("idle");
 
   const resendVerification = async () => {
     if (!user.email || resendState === "sending") return;
     setResendState("sending");
     try {
-      await fetch("https://admin.onehaatbd.com/api/v1/email/verification-notification", {
+      const response = await fetch("https://admin.onehaatbd.com/api/v1/email/verification-notification", {
         method: "POST",
         headers: { "Content-Type": "application/json", Accept: "application/json" },
         body: JSON.stringify({ email: user.email }),
       });
-    } finally {
+      if (!response.ok) throw new Error("Resend failed");
       setResendState("sent");
+    } catch {
+      setResendState("error");
     }
   };
+
+  if (verificationPending) {
+    return (
+      <main className="flex min-h-screen items-center justify-center bg-[#F4F6F5] px-4 pb-10 pt-28">
+        <section aria-labelledby="verify-email-heading" className="w-full max-w-lg rounded-3xl border border-[#DFE6E2] bg-white p-6 text-center shadow-xl shadow-slate-200/40 sm:p-10">
+          <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-[#EDF4EA] text-[#234E3B]"><Mail className="h-8 w-8" strokeWidth={1.5} /></div>
+          <h1 id="verify-email-heading" className="mt-6 text-2xl font-extrabold tracking-tight text-[#183B2E] sm:text-3xl">Check your email to continue</h1>
+          <p className="mt-3 text-sm leading-6 text-slate-500">Store created successfully. Please check your email to verify your account.</p>
+          <p className="mt-5 text-sm leading-7 text-slate-600">We sent a verification link to <strong className="break-all text-[#234E3B]">{user.email || "your registered email address"}</strong>. Verify your email before logging in to the admin dashboard.</p>
+          <button type="button" onClick={resendVerification} disabled={resendState === "sending" || resendState === "sent"} className="mt-6 inline-flex min-h-11 items-center justify-center gap-2 rounded-lg border border-[#D8E3DA] px-5 text-sm font-semibold text-[#234E3B] transition hover:bg-[#F3F7F1] disabled:opacity-60">
+            {resendState === "sending" && <Loader2 className="h-4 w-4 animate-spin" />}
+            {resendState === "sent" ? "Verification email requested" : resendState === "sending" ? "Sending..." : "Resend verification email"}
+          </button>
+          <p role="status" aria-live="polite" className="mt-3 text-xs text-slate-500">{resendState === "sent" ? "Please check your inbox and spam folder." : resendState === "error" ? "Could not resend the email. Please try again." : ""}</p>
+        </section>
+      </main>
+    );
+  }
 
   return (
     <main className="min-h-screen bg-white">
