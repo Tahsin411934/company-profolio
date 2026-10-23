@@ -1,9 +1,10 @@
 "use client";
 
-import { ArrowRight, CheckCircle2, Loader2, ShieldCheck, Store, Check } from "lucide-react";
+import { ArrowRight, CheckCircle2, Loader2, ShieldCheck, Store, Check, Eye, EyeOff, Globe2, ShoppingBag, Package, ArrowUpRight } from "lucide-react";
 import { useFormStatus } from "react-dom";
 import { useActionState, useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import styles from "./registration.module.css";
 import { registerStoreOwner } from "./actions";
 
 function SubmitButton() {
@@ -12,7 +13,7 @@ function SubmitButton() {
     <button
       type="submit"
       disabled={pending}
-      className="w-full inline-flex h-12 items-center justify-center gap-2 rounded-lg bg-[#0DB89B] px-6 text-base font-bold text-white transition-all duration-200 hover:bg-[#0AA98E] hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0DB89B] focus-visible:ring-offset-4 disabled:opacity-50 disabled:pointer-events-none"
+      className={styles.primary}
     >
       {pending ? (
         <>
@@ -141,6 +142,7 @@ function SuccessView({ data, message }: { data: any; message: string }) {
 export default function StoreRegisterPage() {
   const [state, formAction] = useActionState(registerStoreOwner, null);
   const [step, setStep] = useState(1);
+  const [showPassword, setShowPassword] = useState(false);
   const formRef = useRef<HTMLFormElement>(null);
   const [storeName, setStoreName] = useState("");
   const [storeSlug, setStoreSlug] = useState("");
@@ -230,28 +232,29 @@ export default function StoreRegisterPage() {
   }
 
   return (
-    <main className="min-h-screen bg-[#F5F8FA] px-4 pb-8 pt-24 sm:px-6 lg:flex lg:items-center lg:pt-28">
-      <div className="mx-auto grid w-full max-w-5xl overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-xl shadow-slate-200/40 lg:grid-cols-[0.85fr_1.15fr]">
-        <aside className="relative hidden flex-col justify-between overflow-hidden bg-[#102D37] p-10 text-white lg:flex">
-          <div className="absolute -bottom-24 -left-24 h-80 w-80 rounded-full border border-white/10" aria-hidden="true" />
-          <div className="relative">
-            <span className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-3 py-1.5 text-xs font-semibold text-emerald-200"><Store className="h-4 w-4" /> AFT COMMERCE</span>
-            <h1 className="mt-10 text-4xl font-extrabold leading-tight tracking-tight">Your business.<br />Your own<br /><span className="text-[#55DFC1]">online store.</span></h1>
-            <p className="mt-5 text-sm leading-7 text-slate-300">Everything you need to start selling, in one simple workspace.</p>
-            <div className="mt-8 space-y-4 text-sm text-slate-200">
-              {["Your own storefront address", "Products and orders in one place", "A plan that grows with you"].map(item => <div key={item} className="flex items-center gap-3"><CheckCircle2 className="h-4 w-4 shrink-0 text-[#55DFC1]" />{item}</div>)}
-            </div>
+    <main className={styles.page}>
+      <div className={styles.shell}>
+        <aside className={styles.brand}>
+          <div className={styles.brandTop}><span className={styles.brandIcon}><ShoppingBag size={20} /></span><span>AFT <span className={styles.brandLight}>COMMERCE</span></span><span className={styles.brandTag}>YOUR NEXT CHAPTER</span></div>
+          <div className={styles.brandIntro}><span className={styles.eyebrow}>SMALL BEGINNINGS. BIG POSSIBILITIES.</span><h1>Built for your<br />next <span>big idea.</span></h1><p>Turn what you love into a business.<br />We?ll take care of the storefront.</p></div>
+          <div className={styles.preview} aria-label="Illustration of your future storefront">
+            <div className={styles.browser}><span /><span /><span /><div><Globe2 size={11} /> {previewSlug}.aftsoftandlimited.com</div></div>
+            <div className={styles.shopHeader}><span>{storeName || "Your next big thing"}</span><ShoppingBag size={15} /></div>
+            <div className={styles.shopHero}><span>THE EVERYDAY COLLECTION</span><strong>A little something.<br />Entirely yours.</strong><span className={styles.shopLink}>Explore the collection <ArrowUpRight size={12} /></span><div className={styles.heroBag}><ShoppingBag strokeWidth={1} /></div></div>
+            <div className={styles.products}>{["Everyday essentials", "Made for you", "Something special"].map((name,i)=><div key={name}><div className={styles.productArt} data-tone={i}><Package strokeWidth={1} /></div><p>{name}</p><span>Discover more</span></div>)}</div>
+            <div className={styles.previewNote}><span className={styles.liveDot} /> A preview of what?s possible</div>
           </div>
-          <p className="relative mt-12 flex items-center gap-2 text-xs text-slate-300"><ShieldCheck className="h-4 w-4 text-[#55DFC1]" /> A secure start for your business</p>
+          <div className={styles.brandFoot}><div><CheckCircle2 size={15} /> Your own store URL</div><div><ShieldCheck size={15} /> Secure from day one</div></div>
         </aside>
-        <div className="p-5 sm:p-8">
-          <div className="mb-6 flex items-center justify-between gap-3 text-xs text-slate-500"><Link href="/" className="font-bold tracking-wide text-[#10245A]">AFT SOFT</Link><span>Already a member? <Link href="/login" className="font-semibold text-[#098672] hover:underline">Log in</Link></span></div>
-          <div className="mb-5 flex items-center gap-3" aria-label={`Step ${step} of 2`}>
-            {["Your details", "Store setup"].map((label, index) => <div key={label} className="flex flex-1 items-center gap-2 border-b-2 pb-3 text-xs font-semibold" style={{ borderColor: step >= index + 1 ? "#0DB89B" : "#E2E8F0", color: step >= index + 1 ? "#098672" : "#94A3B8" }} aria-current={step === index + 1 ? "step" : undefined}><span className="flex h-6 w-6 items-center justify-center rounded-full bg-slate-100">{step > index + 1 ? <Check className="h-3 w-3" /> : index + 1}</span>{label}</div>)}
+        <div className={styles.formPanel}>
+          <div className={styles.topline}><Link href="/" className={styles.mobileBrand}>AFT COMMERCE</Link><span>Already have an account? <Link href="/login">Log in <ArrowUpRight size={12} /></Link></span></div>
+          <div className={styles.steps} aria-label={`Step ${step} of 2`}>
+            {["Your details", "Store setup"].map((label, index) => <div key={label} className={styles.step} style={{ borderColor: step >= index + 1 ? "#0DB89B" : "#E2E8F0", color: step >= index + 1 ? "#098672" : "#94A3B8" }} aria-current={step === index + 1 ? "step" : undefined}><span className="flex h-6 w-6 items-center justify-center rounded-full bg-slate-100">{step > index + 1 ? <Check className="h-3 w-3" /> : index + 1}</span>{label}</div>)}
           </div>
-          <h2 id="registration-heading" tabIndex={-1} className="text-2xl font-extrabold tracking-tight text-[#10245A]">{step === 1 ? "Create your account" : "Make your store yours"}</h2>
-          <p className="mb-5 mt-1 text-sm text-slate-500">{step === 1 ? "A few details to get your business started." : "Choose your address and a plan to get started."}</p>
-          <form ref={formRef} action={formAction} noValidate onSubmit={(event) => {
+          <p className={styles.kicker}>LET?S BUILD SOMETHING GREAT</p>
+          <h2 id="registration-heading" tabIndex={-1} className={styles.title}>{step === 1 ? "Create your account" : "Make your store yours"}</h2>
+          <p className={styles.subtitle}>{step === 1 ? "A few details to get your business started." : "Choose your address and a plan to get started."}</p>
+          <form className={styles.form} ref={formRef} action={formAction} noValidate onSubmit={(event) => {
             if (step === 1) {
               event.preventDefault();
               if (validateStep(1)) { setStep(2); requestAnimationFrame(() => document.getElementById("registration-heading")?.focus()); }
@@ -271,18 +274,15 @@ export default function StoreRegisterPage() {
               </div>
             )}
 <fieldset data-step="1" hidden={step !== 1}>
+  <legend className="sr-only">Owner account</legend>
             <div className="mb-4">
-              <h3 className="text-lg font-bold text-[#10245A] flex items-center gap-2">
-                <Store className="h-5 w-5 text-[#0DB89B]" />
-                Owner account
-              </h3>
               <div className="mt-3 grid gap-3 sm:grid-cols-2">
                 <div>
                   <label htmlFor="first_name" className="block text-sm font-semibold text-slate-700 mb-1">
                     First Name <span className="text-red-500">*</span>
                   </label>
                   <input
-                    id="first_name" name="first_name" type="text" required
+                    autoComplete="given-name" id="first_name" name="first_name" type="text" required
                     value={firstName} onChange={(event) => setFirstName(event.target.value)}
                     className={inputClass("first_name", "w-full rounded-lg border border-slate-200 px-4 py-2.5 text-sm outline-none transition-colors focus:border-[#0DB89B] focus:ring-2 focus:ring-[#0DB89B]/30")}
                     aria-invalid={fieldError("first_name") ? "true" : "false"}
@@ -297,7 +297,7 @@ export default function StoreRegisterPage() {
                     Last Name <span className="text-red-500">*</span>
                   </label>
                   <input
-                    id="last_name" name="last_name" type="text" required
+                    autoComplete="family-name" id="last_name" name="last_name" type="text" required
                     value={lastName} onChange={(event) => setLastName(event.target.value)}
                     className={inputClass("last_name", "w-full rounded-lg border border-slate-200 px-4 py-2.5 text-sm outline-none transition-colors focus:border-[#0DB89B] focus:ring-2 focus:ring-[#0DB89B]/30")}
                     aria-invalid={fieldError("last_name") ? "true" : "false"}
@@ -311,14 +311,14 @@ export default function StoreRegisterPage() {
             </div>
 
             <div className="mb-4">
-              <h3 className="text-lg font-bold text-[#10245A]">Contact details</h3>
+
               <div className="mt-3 grid gap-3 sm:grid-cols-2">
                 <div>
                   <label htmlFor="email" className="block text-sm font-semibold text-slate-700 mb-1">
                     Email <span className="text-red-500">*</span>
                   </label>
                   <input
-                    id="email" name="email" type="email" required
+                    autoComplete="email" id="email" name="email" type="email" required
                     value={email} onChange={(event) => setEmail(event.target.value)}
                     className={inputClass("email", "w-full rounded-lg border border-slate-200 px-4 py-2.5 text-sm outline-none transition-colors focus:border-[#0DB89B] focus:ring-2 focus:ring-[#0DB89B]/30")}
                     aria-invalid={fieldError("email") ? "true" : "false"}
@@ -331,7 +331,7 @@ export default function StoreRegisterPage() {
                 <div>
                   <label htmlFor="phone" className="block text-sm font-semibold text-slate-700 mb-1">Phone <span className="text-red-500">*</span></label>
                   <input
-                    id="phone" name="phone" type="tel" required
+                    autoComplete="tel" id="phone" name="phone" type="tel" required
                     value={phone} onChange={(event) => setPhone(event.target.value)}
                     className={inputClass("phone", "w-full rounded-lg border border-slate-200 px-4 py-2.5 text-sm outline-none transition-colors focus:border-[#0DB89B] focus:ring-2 focus:ring-[#0DB89B]/30")}
                     aria-invalid={fieldError("phone") ? "true" : "false"}
@@ -343,14 +343,14 @@ export default function StoreRegisterPage() {
             </div>
 
             <div className="mb-4">
-              <h3 className="text-lg font-bold text-[#10245A]">Secure your account</h3>
+              <div className={styles.passwordHeading}><span>Account security</span><button type="button" onClick={() => setShowPassword(!showPassword)} aria-pressed={showPassword}>{showPassword ? <EyeOff size={14} /> : <Eye size={14} />}{showPassword ? "Hide passwords" : "Show passwords"}</button></div>
               <div className="mt-3 grid gap-3 sm:grid-cols-2">
                 <div>
                   <label htmlFor="password" className="block text-sm font-semibold text-slate-700 mb-1">
                     Password <span className="text-red-500">*</span>
                   </label>
                   <input
-                    id="password" name="password" type="password" required minLength={8} autoComplete="new-password"
+                    id="password" name="password" type={showPassword ? "text" : "password"} required minLength={8} autoComplete="new-password"
                     className={inputClass("password", "w-full rounded-lg border border-slate-200 px-4 py-2.5 text-sm outline-none transition-colors focus:border-[#0DB89B] focus:ring-2 focus:ring-[#0DB89B]/30")}
                     aria-invalid={fieldError("password") ? "true" : "false"}
                     placeholder="Min 8 characters"
@@ -364,7 +364,7 @@ export default function StoreRegisterPage() {
                     Confirm Password <span className="text-red-500">*</span>
                   </label>
                   <input
-                    id="password_confirmation" name="password_confirmation" type="password" required minLength={8} autoComplete="new-password"
+                    id="password_confirmation" name="password_confirmation" type={showPassword ? "text" : "password"} required minLength={8} autoComplete="new-password"
                     className={inputClass("password_confirmation", "w-full rounded-lg border border-slate-200 px-4 py-2.5 text-sm outline-none transition-colors focus:border-[#0DB89B] focus:ring-2 focus:ring-[#0DB89B]/30")}
                     aria-invalid={fieldError("password_confirmation") ? "true" : "false"}
                     placeholder="Repeat password"
@@ -378,15 +378,15 @@ export default function StoreRegisterPage() {
 
 </fieldset>
 <fieldset data-step="2" hidden={step !== 2}>
+  <legend className="sr-only">Store details</legend>
             <div className="mb-4">
-              <h3 className="text-lg font-bold text-[#10245A]">Store details</h3>
               <div className="mt-3 grid gap-3 sm:grid-cols-2">
                 <div className="sm:col-span-2">
                   <label htmlFor="store_name" className="block text-sm font-semibold text-slate-700 mb-1">
                     Store Name <span className="text-red-500">*</span>
                   </label>
                   <input
-                    id="store_name" name="store_name" type="text" required
+                    autoComplete="organization" id="store_name" name="store_name" type="text" required
                     value={storeName}
                     onChange={(event) => {
                       const value = event.target.value;
@@ -475,9 +475,9 @@ export default function StoreRegisterPage() {
 
 </fieldset>
 
-            {step === 1 ? <button type="submit" className="flex h-12 w-full items-center justify-center gap-2 rounded-lg bg-[#0DB89B] text-sm font-bold text-white transition hover:bg-[#0AA98E]">Continue to store setup <ArrowRight className="h-4 w-4" /></button> : <div className="flex items-center gap-3"><button type="button" onClick={() => setStep(1)} className="h-12 rounded-lg border border-slate-200 px-5 text-sm font-semibold text-slate-600 hover:bg-slate-50">Back</button><div className="flex-1"><SubmitButton /></div></div>}
+            {step === 1 ? <button type="submit" className={styles.primary}>Continue to store setup <ArrowRight className="h-4 w-4" /></button> : <div className="flex items-center gap-3"><button type="button" onClick={() => setStep(1)} className="h-12 rounded-lg border border-slate-200 px-5 text-sm font-semibold text-slate-600 hover:bg-slate-50">Back</button><div className="flex-1"><SubmitButton /></div></div>}
             {state?.message && !state.success && <p role="alert" className="mt-3 text-sm text-red-600">{state.message}</p>}
-            <p className="mt-4 flex items-center justify-center gap-1.5 text-xs text-slate-400"><ShieldCheck className="h-3.5 w-3.5" /> Your information is kept secure.</p>
+            <p className={styles.security}><ShieldCheck className="h-3.5 w-3.5" /> Your information is kept secure.</p>
           </form>
         </div>
       </div>
