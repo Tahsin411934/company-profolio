@@ -136,7 +136,7 @@ export default function StoreRegisterPage() {
           <div className={styles.brandFoot}><div><CheckCircle2 size={15} /> Your own store URL</div><div><ShieldCheck size={15} /> Secure from day one</div></div>
         </aside>
         <div className={styles.formPanel}>
-          <div className={styles.topline}><Link href="/" className={styles.mobileBrand}>AFT COMMERCE</Link><span>Already have an account? <Link href="/login">Log in <ArrowUpRight size={12} /></Link></span></div>
+          <div className={styles.topline}><Link href="/" className={styles.mobileBrand}>AFT COMMERCE</Link><span>Already have an account? <Link href="https://admin.aftsoftandlimited.com">Log in <ArrowUpRight size={12} /></Link></span></div>
           <div className={styles.steps} aria-label={`Step ${step} of 2`}>
             {["Your details", "Store setup"].map((label, index) => <div key={label} className={styles.step} style={{ borderColor: step >= index + 1 ? "#0DB89B" : "#E2E8F0", color: step >= index + 1 ? "#098672" : "#94A3B8" }} aria-current={step === index + 1 ? "step" : undefined}><span className="flex h-6 w-6 items-center justify-center rounded-full bg-slate-100">{step > index + 1 ? <Check className="h-3 w-3" /> : index + 1}</span>{label}</div>)}
           </div>
