@@ -8,7 +8,7 @@ import { useSearchParams } from "next/navigation";
 function VerifiedContent() {
   const params = useSearchParams();
   const storeUrl = params.get("store_url");
-  const adminUrl = params.get("admin_url") || "https://admin.aftsoftandlimited.com";
+  const adminUrl = "https://admin.aftsoftandlimited.com";
   const welcomeSent = params.get("welcome_sent") !== "0";
 
   return (
@@ -31,7 +31,7 @@ function VerifiedContent() {
               <p className="mt-3 text-xs font-bold uppercase tracking-wider text-slate-400">Your storefront</p>
               <p className="mt-1 break-all text-sm font-semibold text-[#0A987F]">{storeUrl || "Available in your email"}</p>
             </a>
-            <a href={`${adminUrl}/login`} className="rounded-xl border border-[#0DB89B]/30 bg-[#EDFFFA] p-5 transition hover:shadow-md">
+            <a href={adminUrl} className="rounded-xl border border-[#0DB89B]/30 bg-[#EDFFFA] p-5 transition hover:shadow-md">
               <LayoutDashboard className="h-5 w-5 text-[#0DB89B]" />
               <p className="mt-3 text-xs font-bold uppercase tracking-wider text-slate-400">Admin dashboard</p>
               <p className="mt-1 break-all text-sm font-semibold text-[#0A987F]">{adminUrl}</p>
@@ -43,7 +43,7 @@ function VerifiedContent() {
               <li>1. Open your dashboard</li><li>2. Add your first product</li><li>3. Customize your storefront</li>
             </ol>
           </div>
-          <a href={`${adminUrl}/login`} className="mt-8 inline-flex h-12 items-center justify-center rounded-lg bg-[#0DB89B] px-7 font-bold text-white transition hover:bg-[#0AA98E]">Go to admin dashboard</a>
+          <a href={adminUrl} className="mt-8 inline-flex h-12 items-center justify-center rounded-lg bg-[#0DB89B] px-7 font-bold text-white transition hover:bg-[#0AA98E]">Go to admin dashboard</a>
         </section>
       </div>
     </main>
