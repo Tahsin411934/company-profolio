@@ -7,6 +7,14 @@ const API_URL = "https://admin.onehaatbd.com/api/v1/register/store-owner";
 
 export async function registerStoreOwner(prevState: any, formData: FormData) {
   try { verificationSessionKey(); } catch {
+    console.error("[store-registration] Verification session configuration failed", {
+      code: "VERIFICATION_SESSION_CONFIG",
+      secretConfigured: Boolean(process.env.SESSION_SECRET),
+      secretLength: process.env.SESSION_SECRET?.trim().length ?? 0,
+      environment: process.env.VERCEL_ENV || process.env.NODE_ENV,
+      deployment: process.env.VERCEL_URL || "local",
+      resolution: "Set SESSION_SECRET (at least 32 characters) for this deployment environment, then redeploy.",
+    });
     return { success: false, errors: {}, message: "Registration is temporarily unavailable. Please try again later." };
   }
   const data: Record<string, string> = {};
@@ -30,6 +38,7 @@ export async function registerStoreOwner(prevState: any, formData: FormData) {
     const body = await res.json();
 
     if (!res.ok) {
+      console.error("[store-registration] Registration API rejected request", { status: res.status });
       return {
         success: false,
         errors: body.errors || {},
@@ -40,7 +49,10 @@ export async function registerStoreOwner(prevState: any, formData: FormData) {
     const responseData = body.data || body;
     registeredEmail = responseData.user?.email || data.email;
 
-  } catch {
+  } catch (error) {
+    console.error("[store-registration] Registration API request failed", {
+      errorType: error instanceof Error ? error.name : "UnknownError",
+    });
     return {
       success: false,
       errors: {},

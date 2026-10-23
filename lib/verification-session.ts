@@ -7,7 +7,7 @@ const MAX_AGE = 60 * 60;
 type VerificationSession = { email: string; expiresAt: number; resendAfter: number };
 
 export function verificationSessionKey() {
-  const secret = process.env.SESSION_SECRET;
+  const secret = process.env.SESSION_SECRET?.trim();
   if (!secret || secret.length < 32) throw new Error("SESSION_SECRET must contain at least 32 characters.");
   return createHash("sha256").update(secret).digest();
 }
