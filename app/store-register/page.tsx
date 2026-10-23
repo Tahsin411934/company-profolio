@@ -1,8 +1,8 @@
 "use client";
 
-import { ArrowRight, CheckCircle2, CircleCheck, Loader2, ShieldCheck, Store, Check } from "lucide-react";
-import { useFormState, useFormStatus } from "react-dom";
-import { useEffect, useState } from "react";
+import { ArrowRight, CheckCircle2, Loader2, ShieldCheck, Store, Check } from "lucide-react";
+import { useFormStatus } from "react-dom";
+import { useActionState, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { registerStoreOwner } from "./actions";
 
@@ -139,7 +139,9 @@ function SuccessView({ data, message }: { data: any; message: string }) {
 }
 
 export default function StoreRegisterPage() {
-  const [state, formAction] = useFormState(registerStoreOwner, null);
+  const [state, formAction] = useActionState(registerStoreOwner, null);
+  const [step, setStep] = useState(1);
+  const formRef = useRef<HTMLFormElement>(null);
   const [storeName, setStoreName] = useState("");
   const [storeSlug, setStoreSlug] = useState("");
   const [firstName, setFirstName] = useState("");
@@ -199,79 +201,67 @@ export default function StoreRegisterPage() {
   }, [storeSlug, previewSlug]);
 
   useEffect(() => {
-    if (Object.keys(errors).length > 0) {
-      document.querySelector<HTMLElement>("[aria-invalid='true']")?.focus();
+    if (!state || state.success) return;
+    const ownerFields = ["first_name", "last_name", "email", "phone", "password", "password_confirmation"];
+    const firstError = Object.keys(state.errors || {})[0];
+    if (firstError) {
+      setStep(ownerFields.includes(firstError) ? 1 : 2);
+      requestAnimationFrame(() => document.getElementById(firstError)?.focus());
     }
   }, [state]);
+  const validateStep = (target: number) => {
+    const fields = formRef.current?.querySelectorAll<HTMLInputElement>(`[data-step="${target}"] input, [data-step="${target}"] select`);
+    const password = formRef.current?.querySelector<HTMLInputElement>("#password");
+    const confirmation = formRef.current?.querySelector<HTMLInputElement>("#password_confirmation");
+    confirmation?.setCustomValidity(password?.value !== confirmation.value ? "Passwords must match." : "");
+    if (!fields) return false;
+    for (const field of fields) {
+      if (!field.checkValidity()) {
+        setStep(target);
+        requestAnimationFrame(() => field.reportValidity());
+        return false;
+      }
+    }
+    return true;
+  };
 
   if (state?.success) {
     return <SuccessView data={state.data} message={state.message} />;
   }
 
   return (
-    <main className="min-h-screen bg-white">
-      <section className="relative overflow-hidden bg-[linear-gradient(135deg,#F7FBFF_0%,#FFFFFF_50%,#F3FFFB_100%)] pb-16 pt-28 sm:pb-20 sm:pt-32 lg:pb-24 lg:pt-36">
-        <div
-          className="pointer-events-none absolute -left-24 top-24 h-72 w-72 rounded-full bg-[#0DB89B]/10 blur-[120px]"
-          aria-hidden="true"
-        />
-        <div
-          className="pointer-events-none absolute -right-24 bottom-10 h-72 w-72 rounded-full bg-[#2783F3]/10 blur-[120px]"
-          aria-hidden="true"
-        />
-
-        <div className="relative z-10 mx-auto grid max-w-7xl items-center gap-10 px-[18px] sm:px-6 lg:grid-cols-2 lg:gap-12">
-          <div>
-            <span className="inline-flex h-8 items-center rounded-full px-4 text-sm font-bold uppercase tracking-[1.8px] bg-[#DDF9F1] text-[#0A987F]">
-              E-COMMERCE
-            </span>
-            <h1 className="mt-6 max-w-2xl text-[34px] font-extrabold leading-[1.08] tracking-[-1px] text-[#10245A] sm:text-[44px] lg:text-[54px]">
-              Start Your E-commerce Store Today
-            </h1>
-            <p className="mt-5 max-w-xl text-base leading-[1.7] text-[#687991]">
-              Launch, manage, and grow your online business from one powerful,
-              easy-to-use platform. Create your store free and get a
-              storefront URL instantly.
-            </p>
-            <div className="mt-8 flex flex-wrap items-center gap-4">
-              <div className="flex items-center gap-2 text-sm font-semibold text-[#0A987F]">
-                <Store className="h-5 w-5" />
-                Free store URL included
-              </div>
-              <div className="flex items-center gap-2 text-sm font-semibold text-[#0A987F]">
-                <ShieldCheck className="h-5 w-5" />
-                Secure by default
-              </div>
+    <main className="min-h-screen bg-[#F5F8FA] px-4 pb-8 pt-24 sm:px-6 lg:flex lg:items-center lg:pt-28">
+      <div className="mx-auto grid w-full max-w-5xl overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-xl shadow-slate-200/40 lg:grid-cols-[0.85fr_1.15fr]">
+        <aside className="relative hidden flex-col justify-between overflow-hidden bg-[#102D37] p-10 text-white lg:flex">
+          <div className="absolute -bottom-24 -left-24 h-80 w-80 rounded-full border border-white/10" aria-hidden="true" />
+          <div className="relative">
+            <span className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-3 py-1.5 text-xs font-semibold text-emerald-200"><Store className="h-4 w-4" /> AFT COMMERCE</span>
+            <h1 className="mt-10 text-4xl font-extrabold leading-tight tracking-tight">Your business.<br />Your own<br /><span className="text-[#55DFC1]">online store.</span></h1>
+            <p className="mt-5 text-sm leading-7 text-slate-300">Everything you need to start selling, in one simple workspace.</p>
+            <div className="mt-8 space-y-4 text-sm text-slate-200">
+              {["Your own storefront address", "Products and orders in one place", "A plan that grows with you"].map(item => <div key={item} className="flex items-center gap-3"><CheckCircle2 className="h-4 w-4 shrink-0 text-[#55DFC1]" />{item}</div>)}
             </div>
           </div>
-          <div className="hidden lg:block">
-            <div className="relative h-[400px] w-full rounded-[22px] bg-[linear-gradient(135deg,#EDFFFA_0%,#F7FFFC_100%)] p-8 flex items-center justify-center">
-              <Store className="h-32 w-32 text-[#0DB89B]/30" />
-            </div>
+          <p className="relative mt-12 flex items-center gap-2 text-xs text-slate-300"><ShieldCheck className="h-4 w-4 text-[#55DFC1]" /> A secure start for your business</p>
+        </aside>
+        <div className="p-5 sm:p-8">
+          <div className="mb-6 flex items-center justify-between gap-3 text-xs text-slate-500"><Link href="/" className="font-bold tracking-wide text-[#10245A]">AFT SOFT</Link><span>Already a member? <Link href="/login" className="font-semibold text-[#098672] hover:underline">Log in</Link></span></div>
+          <div className="mb-5 flex items-center gap-3" aria-label={`Step ${step} of 2`}>
+            {["Your details", "Store setup"].map((label, index) => <div key={label} className="flex flex-1 items-center gap-2 border-b-2 pb-3 text-xs font-semibold" style={{ borderColor: step >= index + 1 ? "#0DB89B" : "#E2E8F0", color: step >= index + 1 ? "#098672" : "#94A3B8" }} aria-current={step === index + 1 ? "step" : undefined}><span className="flex h-6 w-6 items-center justify-center rounded-full bg-slate-100">{step > index + 1 ? <Check className="h-3 w-3" /> : index + 1}</span>{label}</div>)}
           </div>
-        </div>
-      </section>
-
-      <section className="py-16 sm:py-20 lg:py-24">
-        <div className="mx-auto max-w-2xl px-[18px] sm:px-6">
-          <div className="text-center mb-10">
-            <div className="mx-auto inline-flex items-center gap-2 rounded-full bg-[#DDF9F1] px-4 py-2 text-xs font-bold uppercase tracking-[1.5px] text-[#0A987F]"><CircleCheck className="h-4 w-4" /> Free forever to get started</div>
-            <h2 className="section-title mt-4">Create Your Store</h2>
-            <p className="mx-auto mt-4 max-w-xl text-lg leading-relaxed text-slate-600">
-              Set up your owner account and choose your free storefront address.
-            </p>
-          </div>
-
-          <div className="mb-6 grid gap-3 rounded-2xl border border-slate-200 bg-slate-50 p-4 text-sm text-slate-600 sm:grid-cols-3">
-            <div className="flex items-center gap-2"><span className="flex h-7 w-7 items-center justify-center rounded-full bg-[#0DB89B] text-xs font-bold text-white">1</span> Owner account</div>
-            <div className="flex items-center gap-2"><span className="flex h-7 w-7 items-center justify-center rounded-full bg-[#0DB89B] text-xs font-bold text-white">2</span> Store details</div>
-            <div className="flex items-center gap-2"><span className="flex h-7 w-7 items-center justify-center rounded-full bg-[#0DB89B] text-xs font-bold text-white">3</span> Launch instantly</div>
-          </div>
-
-          <form action={formAction} className="rounded-[22px] border border-slate-200 bg-white p-6 sm:p-8 lg:p-10 shadow-sm">
+          <h2 id="registration-heading" tabIndex={-1} className="text-2xl font-extrabold tracking-tight text-[#10245A]">{step === 1 ? "Create your account" : "Make your store yours"}</h2>
+          <p className="mb-5 mt-1 text-sm text-slate-500">{step === 1 ? "A few details to get your business started." : "Choose your address and a plan to get started."}</p>
+          <form ref={formRef} action={formAction} noValidate onSubmit={(event) => {
+            if (step === 1) {
+              event.preventDefault();
+              if (validateStep(1)) { setStep(2); requestAnimationFrame(() => document.getElementById("registration-heading")?.focus()); }
+              return;
+            }
+            if (!validateStep(1) || !validateStep(2)) event.preventDefault();
+          }}>
             <input type="hidden" name="plan_slug" value={selectedPlan} />
             {state?.message && Object.keys(errors).length > 0 && (
-              <div role="alert" className="mb-8 rounded-xl border border-red-200 bg-red-50 p-4 text-left">
+              <div role="alert" className="mb-4 rounded-xl border border-red-200 bg-red-50 p-4 text-left">
                 <p className="text-sm font-bold text-red-700">Please review the highlighted fields.</p>
                 <ul className="mt-2 list-disc space-y-1 pl-5 text-xs text-red-600">
                   {Object.entries(errors).map(([name, messages]) => (
@@ -280,12 +270,13 @@ export default function StoreRegisterPage() {
                 </ul>
               </div>
             )}
-            <div className="mb-8">
+<fieldset data-step="1" hidden={step !== 1}>
+            <div className="mb-4">
               <h3 className="text-lg font-bold text-[#10245A] flex items-center gap-2">
                 <Store className="h-5 w-5 text-[#0DB89B]" />
                 Owner account
               </h3>
-              <div className="mt-4 grid gap-4 sm:grid-cols-2">
+              <div className="mt-3 grid gap-3 sm:grid-cols-2">
                 <div>
                   <label htmlFor="first_name" className="block text-sm font-semibold text-slate-700 mb-1">
                     First Name <span className="text-red-500">*</span>
@@ -319,9 +310,9 @@ export default function StoreRegisterPage() {
               </div>
             </div>
 
-            <div className="mb-8">
+            <div className="mb-4">
               <h3 className="text-lg font-bold text-[#10245A]">Contact details</h3>
-              <div className="mt-4 grid gap-4 sm:grid-cols-2">
+              <div className="mt-3 grid gap-3 sm:grid-cols-2">
                 <div>
                   <label htmlFor="email" className="block text-sm font-semibold text-slate-700 mb-1">
                     Email <span className="text-red-500">*</span>
@@ -351,15 +342,15 @@ export default function StoreRegisterPage() {
               </div>
             </div>
 
-            <div className="mb-8">
+            <div className="mb-4">
               <h3 className="text-lg font-bold text-[#10245A]">Secure your account</h3>
-              <div className="mt-4 grid gap-4 sm:grid-cols-2">
+              <div className="mt-3 grid gap-3 sm:grid-cols-2">
                 <div>
                   <label htmlFor="password" className="block text-sm font-semibold text-slate-700 mb-1">
                     Password <span className="text-red-500">*</span>
                   </label>
                   <input
-                    id="password" name="password" type="password" required
+                    id="password" name="password" type="password" required minLength={8} autoComplete="new-password"
                     className={inputClass("password", "w-full rounded-lg border border-slate-200 px-4 py-2.5 text-sm outline-none transition-colors focus:border-[#0DB89B] focus:ring-2 focus:ring-[#0DB89B]/30")}
                     aria-invalid={fieldError("password") ? "true" : "false"}
                     placeholder="Min 8 characters"
@@ -373,7 +364,7 @@ export default function StoreRegisterPage() {
                     Confirm Password <span className="text-red-500">*</span>
                   </label>
                   <input
-                    id="password_confirmation" name="password_confirmation" type="password" required
+                    id="password_confirmation" name="password_confirmation" type="password" required minLength={8} autoComplete="new-password"
                     className={inputClass("password_confirmation", "w-full rounded-lg border border-slate-200 px-4 py-2.5 text-sm outline-none transition-colors focus:border-[#0DB89B] focus:ring-2 focus:ring-[#0DB89B]/30")}
                     aria-invalid={fieldError("password_confirmation") ? "true" : "false"}
                     placeholder="Repeat password"
@@ -385,9 +376,11 @@ export default function StoreRegisterPage() {
               </div>
             </div>
 
-            <div className="mb-8">
+</fieldset>
+<fieldset data-step="2" hidden={step !== 2}>
+            <div className="mb-4">
               <h3 className="text-lg font-bold text-[#10245A]">Store details</h3>
-              <div className="mt-4 grid gap-4 sm:grid-cols-2">
+              <div className="mt-3 grid gap-3 sm:grid-cols-2">
                 <div className="sm:col-span-2">
                   <label htmlFor="store_name" className="block text-sm font-semibold text-slate-700 mb-1">
                     Store Name <span className="text-red-500">*</span>
@@ -471,28 +464,23 @@ export default function StoreRegisterPage() {
               </div>
             </div>
 
-            <div className="mb-8">
+            <div className="mb-4">
               <div className="flex items-end justify-between gap-4">
                 <div><h3 className="text-lg font-bold text-[#10245A]">Choose your plan</h3><p className="mt-1 text-sm text-slate-500">Start with the plan that fits your business. You can upgrade later.</p></div>
                 <span className="hidden rounded-full bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-700 sm:inline-flex">No payment required today</span>
               </div>
-              {plansLoading ? <div className="mt-4 grid gap-3 sm:grid-cols-3">{[1,2,3].map((item) => <div key={item} className="h-44 animate-pulse rounded-xl bg-slate-100" />)}</div> : plans.length ? <div className="mt-4 grid gap-3 md:grid-cols-3">{plans.map((plan: any) => { const selected = selectedPlan === plan.slug; return <button type="button" key={plan.id} onClick={() => setSelectedPlan(plan.slug)} className={`relative text-left rounded-xl border-2 p-4 transition-all ${selected ? "border-[#0DB89B] bg-[#F1FFFB] shadow-md" : "border-slate-200 bg-white hover:border-[#0DB89B]/50"}`} aria-pressed={selected}><span className="absolute right-3 top-3 flex h-5 w-5 items-center justify-center rounded-full border"><Check className="h-3 w-3" /></span><p className="pr-6 text-base font-bold text-[#10245A]">{plan.name}</p><p className="mt-1 text-xl font-extrabold text-[#0A987F]">{plan.is_free ? "Free" : `${Number(plan.price).toLocaleString()} ${plan.currency}`}<span className="text-xs font-medium text-slate-500">{plan.duration_days ? ` / ${plan.duration_days} days` : ""}</span></p><p className="mt-2 text-xs text-slate-500">{plan.product_limit ? `Up to ${plan.product_limit} products` : "Unlimited products"}</p><ul className="mt-3 space-y-1 text-xs text-slate-600">{(plan.features || []).slice(0, 3).map((feature: any) => <li key={feature.id}>✓ {feature.name}</li>)}</ul></button>; })}</div> : <div className="mt-4 rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-800">Plans are temporarily unavailable. Please try again in a moment.</div>}
+              {plansLoading ? <div className="mt-4 grid gap-3 sm:grid-cols-3">{[1,2,3].map((item) => <div key={item} className="h-14 animate-pulse rounded-xl bg-slate-100" />)}</div> : plans.length ? <div className="mt-3 grid gap-2">{plans.map((plan: any) => { const selected = selectedPlan === plan.slug; return <button type="button" key={plan.id} onClick={() => setSelectedPlan(plan.slug)} className={`relative grid grid-cols-[1fr_auto] items-center gap-x-3 rounded-xl border py-2.5 pl-3 pr-9 text-left transition-all ${selected ? "border-[#0DB89B] bg-[#F1FFFB] shadow-md" : "border-slate-200 bg-white hover:border-[#0DB89B]/50"}`} aria-pressed={selected}><span className="absolute right-3 top-3 flex h-5 w-5 items-center justify-center rounded-full border">{selected && <Check className="h-3 w-3" />}</span><p className="text-sm font-bold text-[#10245A]">{plan.name}</p><p className="row-span-2 text-right text-sm font-extrabold text-[#0A987F]">{plan.is_free ? "Free" : `${Number(plan.price).toLocaleString()} ${plan.currency}`}<span className="text-xs font-medium text-slate-500">{plan.duration_days ? ` / ${plan.duration_days} days` : ""}</span></p><p className="mt-0.5 text-xs text-slate-500">{plan.product_limit ? `Up to ${plan.product_limit} products` : "Unlimited products"}</p></button>; })}</div> : <div className="mt-4 rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-800">Plans are temporarily unavailable. Please try again in a moment.</div>}
               {fieldError("plan_slug") && <p className="mt-2 text-xs font-medium text-red-600">{fieldError("plan_slug")}</p>}
             </div>
 
-            <SubmitButton />
+</fieldset>
 
-            {state?.message && !state?.success && (
-              <p className="mt-3 text-center text-sm text-red-500">{state.message}</p>
-            )}
-
-            <p className="mt-4 text-center text-xs text-slate-400">
-              Already have an account?{" "}
-              <Link href="/login" className="font-semibold text-[#0DB89B] hover:underline">Log in</Link>
-            </p>
+            {step === 1 ? <button type="submit" className="flex h-12 w-full items-center justify-center gap-2 rounded-lg bg-[#0DB89B] text-sm font-bold text-white transition hover:bg-[#0AA98E]">Continue to store setup <ArrowRight className="h-4 w-4" /></button> : <div className="flex items-center gap-3"><button type="button" onClick={() => setStep(1)} className="h-12 rounded-lg border border-slate-200 px-5 text-sm font-semibold text-slate-600 hover:bg-slate-50">Back</button><div className="flex-1"><SubmitButton /></div></div>}
+            {state?.message && !state.success && <p role="alert" className="mt-3 text-sm text-red-600">{state.message}</p>}
+            <p className="mt-4 flex items-center justify-center gap-1.5 text-xs text-slate-400"><ShieldCheck className="h-3.5 w-3.5" /> Your information is kept secure.</p>
           </form>
         </div>
-      </section>
+      </div>
     </main>
   );
 }
