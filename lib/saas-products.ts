@@ -27,6 +27,7 @@ export type SaasProduct = {
   productUrl: string;
   demoUrl: string | null;
   registerUrl?: string;
+  documentationUrl?: string;
   metaTitle: string;
   metaDescription: string;
 };
@@ -92,6 +93,7 @@ export const saasProducts: Record<string, SaasProduct> = {
     productUrl: "/products/ecommerce",
     demoUrl: null,
     registerUrl: "/store-register",
+    documentationUrl: "https://admin.aftsoftandlimited.com/documentation",
     metaTitle: "E-commerce Solution | AFT SOFT AND LIMITED",
     metaDescription: "Launch and manage your online business with AFT SOFT AND LIMITED's all-in-one e-commerce platform.",
   },

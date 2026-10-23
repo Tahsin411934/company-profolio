@@ -1,5 +1,6 @@
 import {
   ArrowRight,
+  BookOpen,
   Check,
   ExternalLink,
   Headphones,
@@ -85,6 +86,11 @@ function ProductCard({ product }: { product: SaasProduct }) {
             <Button variant="outline" href={product.demoUrl ?? "#contact"}>
               Live Demo <ExternalLink className="h-4 w-4" />
             </Button>
+            {product.documentationUrl ? (
+              <Button variant="outline" href={product.documentationUrl} target="_blank" rel="noopener noreferrer">
+                Documentation <BookOpen className="h-4 w-4" aria-hidden="true" />
+              </Button>
+            ) : null}
           </div>
         </div>
       </div>

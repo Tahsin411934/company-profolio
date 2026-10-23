@@ -1,6 +1,7 @@
 import {
   ArrowRight,
   BarChart3,
+  BookOpen,
   Check,
   CheckCircle2,
   ExternalLink,
@@ -72,7 +73,7 @@ function ProductButtons({
   dark?: boolean;
 }) {
   return (
-    <div className="flex flex-col gap-3 min-[520px]:flex-row">
+    <div className="flex flex-col flex-wrap gap-3 min-[520px]:flex-row">
       <Button className="w-full px-6 min-[520px]:w-auto" href={product.registerUrl ?? "#contact"}>
         Get Started <ArrowRight className="h-4 w-4" aria-hidden="true" />
       </Button>
@@ -87,6 +88,21 @@ function ProductButtons({
           href={product.demoUrl}
         >
           Live Demo <ExternalLink className="h-4 w-4" aria-hidden="true" />
+        </Button>
+      ) : null}
+      {product.documentationUrl ? (
+        <Button
+          variant="outline"
+          className={cn(
+            "w-full px-6 min-[520px]:w-auto",
+            dark &&
+              "border-white/40 from-white/10 to-blue-300/15 bg-transparent text-white hover:border-white/70 hover:from-white/20 hover:to-blue-300/25",
+          )}
+          href={product.documentationUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Documentation <BookOpen className="h-4 w-4" aria-hidden="true" />
         </Button>
       ) : null}
     </div>
